@@ -11,6 +11,14 @@
 #include "fourSegmentDisplay.h"
 
 
+ISR( INT2_vect )
+{
+	if(1 == 1)//dice_is_rolling())
+	return;
+	
+	//dice_cancel();
+}
+
 int main(void)
 {
 	//initializatie voor het scoreBord
