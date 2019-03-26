@@ -23,11 +23,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   9 .debug_frame  00000354  00000000  00000000  0000412c  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000006f3  00000000  00000000  00004480  2**0
+ 10 .debug_str    00000743  00000000  00000000  00004480  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000b87  00000000  00000000  00004b73  2**0
+ 11 .debug_loc    00000b87  00000000  00000000  00004bc3  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000150  00000000  00000000  000056fa  2**0
+ 12 .debug_ranges 00000150  00000000  00000000  0000574a  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -602,7 +602,7 @@ void addLocation(int x, int y){
 	loc.y = y;
 	calculateNewScoreMovement();
  2c4:	9f d1       	rcall	.+830    	; 0x604 <calculateNewScoreMovement>
-	
+	// add sound
 	int size = getSize();
  2c6:	cf df       	rcall	.-98     	; 0x266 <getSize>
  2c8:	20 91 06 01 	lds	r18, 0x0106	; 0x800106 <maxSize>
@@ -623,7 +623,7 @@ void addLocation(int x, int y){
  2e6:	ec 01       	movw	r28, r24
 			p = p->next;
  2e8:	8e 81       	ldd	r24, Y+6	; 0x06
-	
+	// add sound
 	int size = getSize();
 	if(size < maxSize){
 		displaySetPixel(x,y);
