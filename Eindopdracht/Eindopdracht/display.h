@@ -9,6 +9,11 @@
 #ifndef DISPLAY_H_
 #define DISPLAY_H_
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
 void displayInit(void);
 void drawImage(void);
 void displaySetPixel(uint8_t x, uint8_t y);
@@ -28,6 +33,8 @@ void moveRight(void);
 void setStartLocation(int x,int y);
 
 void increaceSize(void);
+void addCandy(void);
+
 
 
 

@@ -22,6 +22,7 @@ int main(void)
 	wait(500);
 	DDRA = 0x0F;
 
+	//addCandy();
 	setStartLocation(4,4);
 	wait(1000);
 	//int up=0;
@@ -65,6 +66,17 @@ int main(void)
 	//}
 	//wait(1000);
 	//}
+	addCandy();
+	increaceSize();
+	increaceSize();
+	increaceSize();
+	increaceSize();
+	increaceSize();
+	increaceSize();
+	while(1){
+		moveDown();
+		wait(1000);
+	}
 	moveDown();
 	wait(1000);
 	moveDown();
@@ -77,12 +89,10 @@ int main(void)
 	wait(1000);
 	moveUp();
 	wait(1000);
-	increaceSize();
 	moveUp();
 	wait(1000);
 	moveUp();
 	wait(1000);
-	increaceSize();
 	moveUp();
 	wait(1000);
 	moveUp();

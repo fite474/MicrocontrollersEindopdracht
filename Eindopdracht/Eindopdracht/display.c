@@ -7,9 +7,8 @@
 
 #include <avr/io.h>
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+
+
 #include "FourSegmentDisplay.h"
 #include "display.h"
 #include "fonts.h"
@@ -32,6 +31,8 @@ void twi_tx(unsigned char data);
 uint8_t buf[width*height/8];
 int maxSize = 4;
 int counter = 0;
+time_t t;
+
 typedef struct{
 	int x;
 	int y;
@@ -44,7 +45,7 @@ typedef struct{
 	}locatieList;
 
 locatieList *locList;
-
+locatie candy;
 locatie currenLocation;
 /******************************************************************/
 void displayInit(void) 
@@ -59,7 +60,11 @@ Version :    	DMK, Initial code
 	twi_init();							// Enable TWI interface
 	displayInitHT16K33(D0_I2C_ADDR);	// Iit display
 	locList = NULL;
+	
+	srand((unsigned)time(&t));
+	rand(),rand(),rand();
 }
+
 
 void startLoaction(void){
 	locatie loc;
@@ -69,14 +74,14 @@ void startLoaction(void){
 
 void drawImage(void){
 	
-	buf[0]= 0b01111110;
-	buf[1]= 0b10011001;
-	buf[2]= 0b11000011;
-	buf[3]= 0b11111111;
-	buf[4]= 0b00011000;
-	buf[5]= 0b00111100;
-	buf[6]= 0b01111110;
-	buf[7]= 0b11111111;
+	buf[0]= 0b00000000;
+	buf[1]= 0b01100110;
+	buf[2]= 0b01100110;
+	buf[3]= 0b00000000;
+	buf[4]= 0b00111100;
+	buf[5]= 0b01100110;
+	buf[6]= 0b11000011;
+	buf[7]= 0b00000000;
 }
 /******************************************************************/
 void displayInitHT16K33(uint8_t i2c_address) 
@@ -334,11 +339,51 @@ int getSize(){
 
 void increaceSize(){
 	maxSize++;
-	calculateNewScoreAppleCollected();
+	//calculateNewScoreAppleCollected();
+}
+
+void addCandy(){
+	
+	//int random = (rand() % 8);
+
+	
+	rand(),rand(),rand(),rand(),rand(),rand();
+	
+	int x = (rand() % 8);
+	int y = (rand() % 8);
+	locatieList *p = locList;
+	while(p != NULL){
+		if(p->loc.x == x && p->loc.y == y){
+			rand(),rand();
+			x = (rand() % 8);
+			y = (rand() % 8);
+			p = locList;
+		}
+		p = p->next;
+	}
+	candy.x = x;
+	candy.y = y;
+	displaySetPixel(x,y);
+	update();
+}
+int checkColission(int x, int y){
+	locatieList *p = locList;
+	while(p != NULL){
+		if(p->loc.x == x && p->loc.y == y){
+			return 1;
+		}
+		p = p->next;
+	}
+	return 0;
 }
 
 
 void addLocation(int x, int y){
+	if(x == candy.x && y == candy.y){
+		increaceSize();
+		addCandy();
+	}
+	if(!checkColission(x,y)){
 	locatie loc;
 	loc.x = x;
 	loc.y = y;
@@ -379,7 +424,7 @@ void addLocation(int x, int y){
 		}
 		
 		
-		//writeLedDisplay(position);
+		writeLedDisplay(position);
 		p = locList;
 		c = 0;
 		locatieList *newLoc = (locatieList *)malloc(sizeof(locatieList));
@@ -406,6 +451,9 @@ void addLocation(int x, int y){
 			p = p->next;
 			c++;
 		}
+		}
+	}else{
+		drawImage();
 	}
 }
 		
@@ -443,6 +491,9 @@ void moveUp(){
 	int y = currenLocation.y;
 	
 	x--;
+	if(x == -1){
+		x = 7;
+	}
 	addLocation(x,y);
 	update();
 	
@@ -452,6 +503,9 @@ void moveDown(){
 	int y = currenLocation.y;
 	
 	x++;
+	if(x == 8){
+		x = 0;
+	}
 	addLocation(x,y);
 	update();
 }
@@ -461,6 +515,9 @@ void moveLeft(){
 	int y = currenLocation.y;
 
 	y++;
+	if(y == 8){
+		y = 0;
+	}
 	addLocation(x,y);
 	update();
 }
@@ -470,6 +527,9 @@ void moveRight(){
 	int y = currenLocation.y;
 	
 	y--;
+	if(y == -1){
+		y = 7;
+	}
 	addLocation(x,y);
 	update();
 	
