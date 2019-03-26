@@ -9,10 +9,9 @@
 #ifndef BUTTONS_H_
 #define BUTTONS_H_
 
-#define GOING_UP 1
-#define GOING_DOWN 2
-#define GOING_LEFT 3
-#define GOING_RIGHT 4
+enum eStatus {GOING_UP,GOING_DOWN,GOING_LEFT,GOING_RIGHT};
+
+enum eStatus status;
 
 int checkDirection();
 

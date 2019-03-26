@@ -9,11 +9,6 @@
 #include <avr/io.h>
 #include "buttons.h"
 
-
-int direction = 0;
-
-
-
 int checkDirection()
 {
 	//DDRB=0x01; // Set PB0 pin as output for display select
@@ -24,23 +19,23 @@ int checkDirection()
 	
 	
 
-	if (PINA & 0x81 && direction != GOING_DOWN)
+	if (PINA & 0x81 && status != GOING_DOWN)
 	{
-		direction = GOING_UP;
+		status = GOING_UP;
 	}
-	if (PINA & 0x82 && direction != GOING_UP)
+	if (PINA & 0x82 && status != GOING_UP)
 	{
-		direction = GOING_DOWN;
+		status = GOING_DOWN;
 	}
-	if (PINA & 0x84 && direction != GOING_RIGHT)
+	if (PINA & 0x84 && status != GOING_RIGHT)
 	{
-		direction = GOING_LEFT;
+		status = GOING_LEFT;
 	}
-	if (PINA & 0x88 && direction != GOING_LEFT)
+	if (PINA & 0x88 && status != GOING_LEFT)
 	{
-		direction = GOING_RIGHT;
+		status = GOING_RIGHT;
 	}
 	
-	return direction;
+	return status;
 	
 }
