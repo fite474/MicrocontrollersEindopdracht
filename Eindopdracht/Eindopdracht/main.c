@@ -6,13 +6,21 @@
  */ 
 
 #include <avr/io.h>
+#include "wait.h"
+#include "fourSegmentDisplay.h"
 
 
 int main(void)
 {
-    /* Replace with your application code */
+	//initializatie voor het scoreBord
+	DDRB=0x01;					// Set PB0 pin as output for display select
+	spi_masterInit();			// Initialize spi module
+	displayDriverInit();		// Initialize display chip
+	
+	
     while (1) 
     {
+		
     }
 }
 
