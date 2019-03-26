@@ -382,6 +382,7 @@ void addLocation(int x, int y){
 	if(x == candy.x && y == candy.y){
 		increaceSize();
 		addCandy();
+		calculateNewScoreAppleCollected();
 	}
 	if(!checkColission(x,y)){
 	locatie loc;
@@ -424,7 +425,7 @@ void addLocation(int x, int y){
 		}
 		
 		
-		writeLedDisplay(position);
+		//writeLedDisplay(position);
 		p = locList;
 		c = 0;
 		locatieList *newLoc = (locatieList *)malloc(sizeof(locatieList));

@@ -6,9 +6,76 @@
  */ 
 
 #include <avr/io.h>
+#include <avr/interrupt.h>
+
 #include "display.h"
 #include "wait.h"
 #include "fourSegmentDisplay.h"
+#include "buttons.h"
+#define F_CPU 8000000
+
+int tick = 0;
+
+enum eStatus status;
+int check = 1;
+
+
+ISR( TIMER2_COMP_vect )
+{
+	if(check){
+	enum eStatus newStatus = checkDirection();
+	if(status != newStatus){
+		check = 0;
+			status = newStatus;//checkDirection();
+
+		}
+	}
+	//status = checkDirection();
+	if (tick == 1000)
+	{
+		tick = 0;
+		switch (status)
+		{
+		case GOING_UP:
+			moveUp();
+			break;
+		case GOING_DOWN:
+			moveDown();
+			break;
+		case GOING_LEFT:
+			moveLeft();
+			break;
+		case GOING_RIGHT:
+			moveRight();
+			break;
+		case WAITING:
+			break;
+		}
+		check = 1;
+	}
+	
+	//writeLedDisplay(tick);
+	tick++;
+	//
+	//if(high && 15 == tick){
+		//PORTD = 0x00;
+		//tick = 0;
+		//high = 0;
+		//}else if(25 == tick){
+		//PORTD = 0xFF;
+		//tick = 0;
+		//high = 1;
+	//}
+}
+
+void startGame()
+{
+	while (WAITING == checkDirection())
+	{
+	}
+		addCandy();
+
+}
 
 
 int main(void)
@@ -17,7 +84,7 @@ int main(void)
 	DDRB=0x01;					// Set PB0 pin as output for display select
 	spi_masterInit();			// Initialize spi module
 	displayDriverInit();		// Initialize display chip
-	
+	status = WAITING;
 	displayInit();
 	wait(500);
 	DDRA = 0x0F;
@@ -25,6 +92,29 @@ int main(void)
 	//addCandy();
 	setStartLocation(4,4);
 	wait(1000);
+	
+	//
+		//EICRA |= 0x30;			// INT2 rising edge
+		//EIMSK |= 0x04;			// Enable INT2
+	//
+	
+	    OCR2 = 519;
+	    TCCR2 = 1<<WGM21;
+	    
+	    TIMSK = TIMSK | 1<<TOIE1 | 1<<OCIE2;
+	    TCCR2 |= 1<<CS22 | 0<<CS21 | 1<<CS20;
+	    TCNT2 = 0;
+	sei();
+
+	startGame();
+	
+	
+	
+	while (1)
+	{
+	}
+	
+	
 	//int up=0;
 	//int down=0;
 	//int left=0;

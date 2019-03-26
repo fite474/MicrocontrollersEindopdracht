@@ -9,6 +9,7 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include "fourSegmentDisplay.h"
+//#define F_CPU 8000000
 
 
 #define BIT(x) ( 1<<x )

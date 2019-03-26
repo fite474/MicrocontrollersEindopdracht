@@ -9,11 +9,11 @@
 #ifndef BUTTONS_H_
 #define BUTTONS_H_
 
-enum eStatus {GOING_UP,GOING_DOWN,GOING_LEFT,GOING_RIGHT};
+enum eStatus {GOING_UP,GOING_DOWN,GOING_LEFT,GOING_RIGHT, WAITING};
 
-enum eStatus status;
 
-int checkDirection();
+
+int checkDirection(void);
 
 
 

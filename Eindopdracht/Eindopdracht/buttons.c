@@ -9,6 +9,9 @@
 #include <avr/io.h>
 #include "buttons.h"
 
+
+enum eStatus status;
+
 int checkDirection()
 {
 	//DDRB=0x01; // Set PB0 pin as output for display select
