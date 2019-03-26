@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "FourSegmentDisplay.h"
 #include "display.h"
 #include "fonts.h"
 
@@ -44,7 +45,7 @@ typedef struct{
 
 locatieList *locList;
 
-locatie startLocation;
+locatie currenLocation;
 /******************************************************************/
 void displayInit(void) 
 /*
@@ -149,11 +150,11 @@ Version :    	DMK, Initial code
 
 
 void setStartLocation(int x,int y){
-	startLocation.x = x;
-	startLocation.y = y;
+	currenLocation.x = x;
+	currenLocation.y = y;
 	
 	locList = (locatieList *)malloc(sizeof(locatieList));
-	locList->loc = startLocation;
+	locList->loc = currenLocation;
 	locList->number = counter;
 	locList->next = NULL;
 	counter++;
@@ -333,7 +334,6 @@ int getSize(){
 
 void addLocation(int x, int y){
 	int size = getSize();
-	
 	if(size < maxSize){
 		displaySetPixel(x,y);
 		locatieList *p = locList;
@@ -349,22 +349,24 @@ void addLocation(int x, int y){
 		newLoc->next = NULL;
 		p->next = newLoc;
 		counter++;
-		startLocation.x = x;
-		startLocation.y = y;
+		currenLocation.x = x;
+		currenLocation.y = y;
 	}else{
+		//writeLedDisplay(2);
 		displaySetPixel(x,y);
 		locatieList *p = locList;
-		int max = p->number;
+		int min = p->number;
 		int c = 0;
 		int position;
 		while(p->next != NULL){
-			if(p->number <= max){
-				max = p->number;
+			if(p->number <= min){
+				min = p->number;
 				position = c;
 			}
 			c++;
 			p = p->next;
 		}
+		writeLedDisplay(position);
 		p = locList;
 		c = 0;
 		locatieList *newLoc = (locatieList *)malloc(sizeof(locatieList));
@@ -379,17 +381,18 @@ void addLocation(int x, int y){
 				newLoc->number = counter;
 				newLoc->next = p->next;
 				counter++;
-				//free(p);
+				free(p);
 				if(position == 0){
 					locList = newLoc;	
 				}else{
 					pervLoc->next = newLoc;
 				}
-				startLocation.x = x;
-				startLocation.y = y;
+				currenLocation.x = x;
+				currenLocation.y = y;
 				break;
 			}
 			p = p->next;
+			c++;
 		}
 	}
 }
@@ -424,8 +427,8 @@ void addLocation(int x, int y){
 
 void moveUp(){
 	
-	int x = startLocation.x;
-	int y = startLocation.y;
+	int x = currenLocation.x;
+	int y = currenLocation.y;
 	
 	x--;
 	addLocation(x,y);
@@ -433,8 +436,8 @@ void moveUp(){
 	
 }
 void moveDown(){
-	int x = startLocation.x;
-	int y = startLocation.y;
+	int x = currenLocation.x;
+	int y = currenLocation.y;
 	
 	x++;
 	addLocation(x,y);
@@ -442,8 +445,8 @@ void moveDown(){
 }
 
 void moveLeft(){
-	int x = startLocation.x;
-	int y = startLocation.y;
+	int x = currenLocation.x;
+	int y = currenLocation.y;
 
 	y++;
 	addLocation(x,y);
@@ -451,8 +454,8 @@ void moveLeft(){
 }
 
 void moveRight(){
-	int x = startLocation.x;
-	int y = startLocation.y;
+	int x = currenLocation.x;
+	int y = currenLocation.y;
 	
 	y--;
 	addLocation(x,y);
