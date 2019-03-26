@@ -158,7 +158,7 @@ void setStartLocation(int x,int y){
 	locList->number = counter;
 	locList->next = NULL;
 	counter++;
-	(x,y);
+	//(x,y);
 	displaySetPixel(x,y);
 	update();
 }
@@ -174,7 +174,7 @@ Version :    	DMK, Initial code
 {
 	uint8_t newByte = 1 << y;
 	//newByte = newByte << y;
-	
+	//writeLedDisplay(x+y * 100);
 	buf[x] = buf[x] ^ newByte;
 }
 
@@ -332,7 +332,18 @@ int getSize(){
 	return size;
 }
 
+void increaceSize(){
+	maxSize++;
+	calculateNewScoreAppleCollected();
+}
+
+
 void addLocation(int x, int y){
+	locatie loc;
+	loc.x = x;
+	loc.y = y;
+	calculateNewScoreMovement();
+	// add sound
 	int size = getSize();
 	if(size < maxSize){
 		displaySetPixel(x,y);
@@ -340,14 +351,14 @@ void addLocation(int x, int y){
 		while(p->next != NULL){
 			p = p->next;
 		}
-		locatie loc;
-		loc.x = x;
-		loc.y = y;
+		
 		locatieList *newLoc = (locatieList *)malloc(sizeof(locatieList));
 		newLoc->loc = loc;
 		newLoc->number = counter;
+		//writeLedDisplay(counter);
 		newLoc->next = NULL;
 		p->next = newLoc;
+		
 		counter++;
 		currenLocation.x = x;
 		currenLocation.y = y;
@@ -357,26 +368,26 @@ void addLocation(int x, int y){
 		locatieList *p = locList;
 		int min = p->number;
 		int c = 0;
-		int position;
-		while(p->next != NULL){
-			if(p->number <= min){
+		int position = 0;
+		while(p != NULL){
+			if(p->number < min){
 				min = p->number;
 				position = c;
 			}
 			c++;
 			p = p->next;
 		}
-		writeLedDisplay(position);
+		
+		
+		//writeLedDisplay(position);
 		p = locList;
 		c = 0;
 		locatieList *newLoc = (locatieList *)malloc(sizeof(locatieList));
 		locatieList *pervLoc = NULL; 
-		while(p->next != NULL){
+		while(p != NULL){
 			if(c == position){
 				displayClrPixel(p->loc.x,p->loc.y);
-				locatie loc;
-				loc.x = x;
-				loc.y = y;
+			//	writeLedDisplay(p->number);
 				newLoc->loc = loc;
 				newLoc->number = counter;
 				newLoc->next = p->next;
@@ -391,6 +402,7 @@ void addLocation(int x, int y){
 				currenLocation.y = y;
 				break;
 			}
+			pervLoc = p;
 			p = p->next;
 			c++;
 		}

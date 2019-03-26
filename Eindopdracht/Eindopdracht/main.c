@@ -67,33 +67,35 @@ int main(void)
 	//}
 	moveDown();
 	wait(1000);
-	
 	moveDown();
 	wait(1000);
-	
+	moveDown();
+	wait(1000);
 	moveLeft();
 	wait(1000);
-	
 	moveLeft();
 	wait(1000);
-	
 	moveUp();
 	wait(1000);
-	
+	increaceSize();
 	moveUp();
 	wait(1000);
-	
+	moveUp();
+	wait(1000);
+	increaceSize();
+	moveUp();
+	wait(1000);
+	moveUp();
+	wait(1000);
+	moveUp();
+	wait(1000);
+	moveRight();
+	wait(1000);
+	moveRight();
+	wait(1000);
 	moveRight();
 	wait(1000);
 	
-	moveRight();
-	wait(1000);
-	
-	moveRight();
-	wait(1000);
-	
-	moveRight();
-	wait(1000);
 	
 	
 	//displayChar('1', 0, 0);
@@ -105,10 +107,10 @@ int main(void)
 	//update();
 	
 	
-	int x = 0;
-	int pos = 1;
-	int y = 0;
-	while(1==1) {
+	//int x = 0;
+	//int pos = 1;
+	//int y = 0;
+	//while(1==1) {
 		//displaySetPixel(3,3);
 		//if(pos)
 		//displaySetPixel(x++,y);
@@ -127,7 +129,7 @@ int main(void)
 		//y = 0;
 		//}
 		//wait(100);
-	}
+	//}
 
     while (1) 
     {

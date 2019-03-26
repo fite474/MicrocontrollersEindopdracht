@@ -27,6 +27,8 @@ void moveLeft(void);
 void moveRight(void);
 void setStartLocation(int x,int y);
 
+void increaceSize(void);
+
 
 
 

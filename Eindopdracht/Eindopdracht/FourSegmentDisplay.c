@@ -19,6 +19,8 @@
 #define SPI_MISO 3		// PB3: spi Pin MISO
 #define SPI_SS 0		// PB0: spi Pin Slave Select
 
+int score = 0;
+
 void spi_masterInit(void)
 {
 	DDR_SPI = 0xff;							// All pins output: MOSI, SCK, SS, SS_display
@@ -141,14 +143,16 @@ void clearDisplay(void)
 	}
 }
 
-int calculateNewScoreAppleCollected(int currentScore)
+void calculateNewScoreAppleCollected()
 {
-	return currentScore += 20;
+	score += 20;
+	writeLedDisplay(score);
 }
 
-int calculateNewScoreMovement(int currentScore)
+void calculateNewScoreMovement()
 {
-	return currentScore += 2;
+	score += 2;
+	writeLedDisplay(score);
 }
 
 
