@@ -157,8 +157,8 @@ void resetScore(){
 
 void calculateNewScoreMovement()
 {
-	score += 2;
-	writeLedDisplay(score);
+	//score += 2;
+	//writeLedDisplay(score);
 }
 
 
