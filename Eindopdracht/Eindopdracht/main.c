@@ -15,13 +15,18 @@
 #define F_CPU 8000000
 
 int tick = 0;
+enum gameStatus{COUNTING, PLAYING, GAMEOVER};
 
-enum eStatus status;
+enum gameStatus gStatus = COUNTING;
+enum eStatus status = GOING_UP;
 int check = 1;
 
 
 ISR( TIMER2_COMP_vect )
 {
+	switch(gStatus){
+	case PLAYING :{
+	
 	if(check){
 	enum eStatus newStatus = checkDirection();
 	if(status != newStatus){
@@ -31,41 +36,83 @@ ISR( TIMER2_COMP_vect )
 		}
 	}
 	//status = checkDirection();
-	if (tick == 1000)
+	if (tick == 200)
 	{
 		tick = 0;
 		switch (status)
 		{
 		case GOING_UP:
-			moveUp();
+			if(!moveUp()){
+				gStatus = GAMEOVER;
+			}
 			break;
 		case GOING_DOWN:
-			moveDown();
+			if(!moveDown()){
+				gStatus = GAMEOVER;
+			}
 			break;
 		case GOING_LEFT:
-			moveLeft();
+			if(!moveLeft()){
+				gStatus = GAMEOVER;
+			}
 			break;
 		case GOING_RIGHT:
-			moveRight();
+			if(!moveRight()){
+				gStatus = GAMEOVER;
+			}
 			break;
 		case WAITING:
 			break;
 		}
 		check = 1;
 	}
-	
-	//writeLedDisplay(tick);
+	break;
+	}
+	case COUNTING :{
+		if(tick == 700){
+			drawCounting(3);
+			update();
+		}else
+		if(tick == 1400){
+			drawCounting(2);
+			update();
+		}else
+		if(tick == 2100){
+			drawCounting(1);
+			update();
+		}else
+		if (tick == 2800)
+		{
+			displayClr();
+			displayDrawStart();
+			addCandy();
+			update();
+			gStatus = PLAYING;
+			check = 0;
+			tick = 0;
+		}
+		
+		break;
+	}
+	case GAMEOVER :
+	{
+		if(1 == tick){
+			drawImage();
+			update();
+		}else
+		if(tick > 4000){
+				gStatus = COUNTING;
+				displayReset();
+				resetScore();
+				displayClr();
+				update();
+				setStartLocation(4,4);
+				tick = 0;
+		}
+		break;
+	}
+	}
 	tick++;
-	//
-	//if(high && 15 == tick){
-		//PORTD = 0x00;
-		//tick = 0;
-		//high = 0;
-		//}else if(25 == tick){
-		//PORTD = 0xFF;
-		//tick = 0;
-		//high = 1;
-	//}
 }
 
 void startGame()
@@ -73,7 +120,7 @@ void startGame()
 	while (WAITING == checkDirection())
 	{
 	}
-		addCandy();
+		
 
 }
 
@@ -91,7 +138,6 @@ int main(void)
 
 	//addCandy();
 	setStartLocation(4,4);
-	wait(1000);
 	
 	//
 		//EICRA |= 0x30;			// INT2 rising edge
@@ -106,134 +152,12 @@ int main(void)
 	    TCNT2 = 0;
 	sei();
 
-	startGame();
+	//startGame();
 	
 	
 	
 	while (1)
 	{
 	}
-	
-	
-	//int up=0;
-	//int down=0;
-	//int left=0;
-	//int right=0;
-	//
-	//while (1)
-	//{
-	//if (PINA & 0x81 || up)
-	//{
-	//moveUp();
-	//int up=1;
-	//int down=0;
-	//int left=0;
-	//int right=0;
-	//}
-	//else if (PINA & 0x82 || down)
-	//{
-	//moveDown();
-	//int up=0;
-	//int down=1;
-	//int left=0;
-	//int right=0;
-	//}
-	//else if (PINA & 0x84 || left)
-	//{
-	//moveLeft();
-	//int up=0;
-	//int down=0;
-	//int left=1;
-	//int right=0;
-	//}
-	//else if (PINA & 0x88 || right)
-	//{
-	//moveRight();
-	//int up=0;
-	//int down=0;
-	//int left=0;
-	//int right=1;
-	//}
-	//wait(1000);
-	//}
-	addCandy();
-	increaceSize();
-	increaceSize();
-	increaceSize();
-	increaceSize();
-	increaceSize();
-	increaceSize();
-	while(1){
-		moveDown();
-		wait(1000);
-	}
-	moveDown();
-	wait(1000);
-	moveDown();
-	wait(1000);
-	moveDown();
-	wait(1000);
-	moveLeft();
-	wait(1000);
-	moveLeft();
-	wait(1000);
-	moveUp();
-	wait(1000);
-	moveUp();
-	wait(1000);
-	moveUp();
-	wait(1000);
-	moveUp();
-	wait(1000);
-	moveUp();
-	wait(1000);
-	moveUp();
-	wait(1000);
-	moveRight();
-	wait(1000);
-	moveRight();
-	wait(1000);
-	moveRight();
-	wait(1000);
-	
-	
-	
-	//displayChar('1', 0, 0);
-	//displayClr();
-	//display();
-	//displaySetPixel(1,1);
-	//displayString("LUL",0,0);
-	//drawImage();
-	//update();
-	
-	
-	//int x = 0;
-	//int pos = 1;
-	//int y = 0;
-	//while(1==1) {
-		//displaySetPixel(3,3);
-		//if(pos)
-		//displaySetPixel(x++,y);
-		//else
-		//displaySetPixel(x--,y);
-		//display();
-		//if(x == 8 && pos){
-		//pos = 0;
-		//y++;
-		//}
-		//if(x == 0 && !pos){
-		//pos = 1;
-		//y++;
-		//}
-		//if(y == 8 ){
-		//y = 0;
-		//}
-		//wait(100);
-	//}
-
-    while (1) 
-    {
-		
-    }
 }
 

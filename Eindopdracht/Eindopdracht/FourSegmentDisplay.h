@@ -21,5 +21,6 @@ void writeLedDisplay(int value);
 void clearDisplay(void);
 void calculateNewScoreAppleCollected(void);
 void calculateNewScoreMovement(void);
+void resetScore(void);
 
 #endif /* FOURSEGMENTDISPLAY_H_ */

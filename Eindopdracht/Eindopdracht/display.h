@@ -26,16 +26,18 @@ void displayClr(void);
 
 void update(void);
 
-void moveUp(void);
-void moveDown(void);
-void moveLeft(void);
-void moveRight(void);
+int moveUp(void);
+int moveDown(void);
+int moveLeft(void);
+int moveRight(void);
 void setStartLocation(int x,int y);
 
 void increaceSize(void);
 void addCandy(void);
 
-
+void drawCounting(int number);
+void displayDrawStart(void);
+void displayReset(void);
 
 
 

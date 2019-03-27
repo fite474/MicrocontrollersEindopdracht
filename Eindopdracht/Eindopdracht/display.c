@@ -83,6 +83,45 @@ void drawImage(void){
 	buf[6]= 0b11000011;
 	buf[7]= 0b00000000;
 }
+
+
+void drawCounting(int number){
+	switch(number){
+	case 3 :{
+	buf[0]= 0b01111110;
+	buf[1]= 0b01111110;
+	buf[2]= 0b00000110;
+	buf[3]= 0b01111110;
+	buf[4]= 0b01111110;
+	buf[5]= 0b00000110;
+	buf[6]= 0b01111110;
+	buf[7]= 0b01111110;
+	break;
+	}
+	case 2 :{
+		buf[0]= 0b01111110;
+		buf[1]= 0b01111110;
+		buf[2]= 0b00000110;
+		buf[3]= 0b01111110;
+		buf[4]= 0b01111110;
+		buf[5]= 0b01100000;
+		buf[6]= 0b01111110;
+		buf[7]= 0b01111110;
+		break;
+	}
+	case 1 :{
+		buf[0]= 0b00011000;
+		buf[1]= 0b00111000;
+		buf[2]= 0b01111000;
+		buf[3]= 0b00011000;
+		buf[4]= 0b00011000;
+		buf[5]= 0b00011000;
+		buf[6]= 0b01111110;
+		buf[7]= 0b01111110;
+		break;
+	}
+}
+}
 /******************************************************************/
 void displayInitHT16K33(uint8_t i2c_address) 
 /*
@@ -163,8 +202,11 @@ void setStartLocation(int x,int y){
 	locList->number = counter;
 	locList->next = NULL;
 	counter++;
-	//(x,y);
-	displaySetPixel(x,y);
+}
+
+
+void displayDrawStart(){
+	displaySetPixel(locList->loc.x,locList->loc.y);
 	update();
 }
 /******************************************************************/
@@ -206,29 +248,6 @@ Version:	DMK, Initial code
 	twi_stop();
 }
 
-/******************************************************************/
-void displayRotl(void)
-/*
-short:		Rotate buffer to the left
-inputs:
-outputs:
-notes:
-Version:	DMK, Initial code
-*******************************************************************/
-{
-}
-
-/******************************************************************/
-void displayRotr(void)
-/*
-short:		Rotate buffer to the right
-inputs:
-outputs:
-notes:
-Version:	DMK, Initial code
-*******************************************************************/
-{
-}
 
 /******************************************************************/
 void displayClr(void)
@@ -240,7 +259,7 @@ notes:
 Version:	DMK, Initial code
 *******************************************************************/
 {
-	for( uint8_t idx = 0; idx < width - 1; idx++) {
+	for( uint8_t idx = 0; idx < width; idx++) {
 		buf[idx] = 0;
 	}
 }
@@ -377,8 +396,22 @@ int checkColission(int x, int y){
 	return 0;
 }
 
+void displayReset(){
+	locatieList *p = locList;
+	while(locList == NULL){
+		while(p->next != NULL){
+		p = p->next;
+		}
+		free(p);
+		p = NULL;
+		p = locList;
+	}
+	maxSize = 4;
+		
+}
 
-void addLocation(int x, int y){
+
+int addLocation(int x, int y){
 	if(x == candy.x && y == candy.y){
 		increaceSize();
 		addCandy();
@@ -451,10 +484,13 @@ void addLocation(int x, int y){
 			pervLoc = p;
 			p = p->next;
 			c++;
+			
 		}
+		return 1;
 		}
 	}else{
-		drawImage();
+		displayClr();
+		return 0;
 	}
 }
 		
@@ -486,7 +522,7 @@ void addLocation(int x, int y){
 	
 
 
-void moveUp(){
+int moveUp(){
 	
 	int x = currenLocation.x;
 	int y = currenLocation.y;
@@ -495,11 +531,15 @@ void moveUp(){
 	if(x == -1){
 		x = 7;
 	}
-	addLocation(x,y);
-	update();
+	if(addLocation(x,y)){
+		update();
+		return 1;
+	}else{
+		return 0;
+	}
 	
 }
-void moveDown(){
+int moveDown(){
 	int x = currenLocation.x;
 	int y = currenLocation.y;
 	
@@ -507,11 +547,15 @@ void moveDown(){
 	if(x == 8){
 		x = 0;
 	}
-	addLocation(x,y);
-	update();
+	if(addLocation(x,y)){
+		update();
+		return 1;
+	}else{
+		return 0;
+	}
 }
 
-void moveLeft(){
+int moveLeft(){
 	int x = currenLocation.x;
 	int y = currenLocation.y;
 
@@ -519,11 +563,15 @@ void moveLeft(){
 	if(y == 8){
 		y = 0;
 	}
-	addLocation(x,y);
-	update();
+	if(addLocation(x,y)){
+		update();
+		return 1;
+		}else{
+		return 0;
+	}
 }
 
-void moveRight(){
+int moveRight(){
 	int x = currenLocation.x;
 	int y = currenLocation.y;
 	
@@ -531,7 +579,10 @@ void moveRight(){
 	if(y == -1){
 		y = 7;
 	}
-	addLocation(x,y);
-	update();
-	
+	if(addLocation(x,y)){
+		update();
+		return 1;
+		}else{
+		return 0;
+	}
 }

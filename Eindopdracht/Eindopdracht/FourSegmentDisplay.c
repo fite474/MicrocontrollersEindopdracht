@@ -150,6 +150,11 @@ void calculateNewScoreAppleCollected()
 	writeLedDisplay(score);
 }
 
+void resetScore(){
+	score = 0;
+	writeLedDisplay(score);
+}
+
 void calculateNewScoreMovement()
 {
 	score += 2;

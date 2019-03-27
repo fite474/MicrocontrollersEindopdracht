@@ -10,7 +10,7 @@
 #include "buttons.h"
 
 
-enum eStatus status;
+enum eStatus moving = GOING_UP;
 
 int checkDirection()
 {
@@ -19,26 +19,24 @@ int checkDirection()
 	//displayDriverInit(); // Initialize display chip
 	
 	DDRA = 0x0F;
-	
-	
 
-	if (PINA & 0x81 && status != GOING_DOWN)
+	if (PINA & 0x81 && moving != GOING_DOWN)
 	{
-		status = GOING_UP;
+		moving = GOING_UP;
 	}
-	if (PINA & 0x82 && status != GOING_UP)
+	if (PINA & 0x82 && moving != GOING_UP)
 	{
-		status = GOING_DOWN;
+		moving = GOING_DOWN;
 	}
-	if (PINA & 0x84 && status != GOING_RIGHT)
+	if (PINA & 0x84 && moving != GOING_RIGHT)
 	{
-		status = GOING_LEFT;
+		moving = GOING_LEFT;
 	}
-	if (PINA & 0x88 && status != GOING_LEFT)
+	if (PINA & 0x88 && moving != GOING_LEFT)
 	{
-		status = GOING_RIGHT;
+		moving = GOING_RIGHT;
 	}
 	
-	return status;
+	return moving;
 	
 }
