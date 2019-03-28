@@ -5,33 +5,27 @@
  *  Author: Diederich Kroeske
  */ 
 
+//defines
+							// I2C address of display
+#define D0_I2C_ADDR	((0x70 + 2) << 1)
+							// Display buffer in ATMEGA memory
+#define	width	8 * 1		// 1 displays width
+#define	height	8			// 1 display height
+
+//includes
 #include <avr/io.h>
-
-
 #include "headers/FourSegmentDisplay.h"
 #include "headers/display.h"
 #include "headers/fonts.h"
 
-// HT16K33 routines
-void displayInitHT16K33(uint8_t i2c_address);
-
-// I2C routines
-void twi_init(void);
-void twi_start(void);
-void twi_stop(void);
-void twi_tx(unsigned char data);
-
-// I2C address of display
-#define D0_I2C_ADDR	((0x70 + 2) << 1)
-
-// Display buffer in ATMEGA memory
-#define	width	8 * 1		// 1 displays width
-#define	height	8			// 1 display height
+//variables
 uint8_t buf[width*height/8];
-int maxSnakeSize = 4;
-int counter = 0;
 time_t t;
 
+int maxSnakeSize = 4;
+int counter = 0;
+
+//structs
 typedef struct{
 	int x;
 	int y;
@@ -46,15 +40,10 @@ typedef struct{
 LocationList *locationList;
 Location candy;
 Location currentLocation;
-/******************************************************************/
+
+
+
 void displayInit(void) 
-/*
-short:			Init display
-inputs:			
-outputs:		-
-notes:			Init display
-Version :    	DMK, Initial code
-*******************************************************************/
 {
 	twi_init();							// Enable TWI interface
 	displayInitHT16K33(D0_I2C_ADDR);	// Iit display
@@ -65,13 +54,15 @@ Version :    	DMK, Initial code
 }
 
 
-void startLoaction(void){
-	Location loc;
-
+void startLoaction(void)
+{
+	//method is never used
+	//Location location;
 }
 
 
-void drawImage(void){
+void drawImage(void)
+{
 	
 	buf[0]= 0b00000000;
 	buf[1]= 0b01100110;
@@ -84,78 +75,77 @@ void drawImage(void){
 }
 
 
-void drawCounting(int number){
-	switch(number){
-	case 3 :{
-	buf[0]= 0b01111110;
-	buf[1]= 0b01111110;
-	buf[2]= 0b00000110;
-	buf[3]= 0b01111110;
-	buf[4]= 0b01111110;
-	buf[5]= 0b00000110;
-	buf[6]= 0b01111110;
-	buf[7]= 0b01111110;
-	break;
-	}
-	case 2 :{
+void drawCounting(int number)
+{
+	switch(number)
+	{
+		case 3 :
+		{
 		buf[0]= 0b01111110;
 		buf[1]= 0b01111110;
 		buf[2]= 0b00000110;
 		buf[3]= 0b01111110;
 		buf[4]= 0b01111110;
-		buf[5]= 0b01100000;
+		buf[5]= 0b00000110;
 		buf[6]= 0b01111110;
 		buf[7]= 0b01111110;
 		break;
-	}
-	case 1 :{
-		buf[0]= 0b00011000;
-		buf[1]= 0b00111000;
-		buf[2]= 0b01111000;
-		buf[3]= 0b00011000;
-		buf[4]= 0b00011000;
-		buf[5]= 0b00011000;
-		buf[6]= 0b01111110;
-		buf[7]= 0b01111110;
-		break;
+		}
+		case 2 :
+		{
+			buf[0]= 0b01111110;
+			buf[1]= 0b01111110;
+			buf[2]= 0b00000110;
+			buf[3]= 0b01111110;
+			buf[4]= 0b01111110;
+			buf[5]= 0b01100000;
+			buf[6]= 0b01111110;
+			buf[7]= 0b01111110;
+			break;
+		}
+		case 1 :
+		{
+			buf[0]= 0b00011000;
+			buf[1]= 0b00111000;
+			buf[2]= 0b01111000;
+			buf[3]= 0b00011000;
+			buf[4]= 0b00011000;
+			buf[5]= 0b00011000;
+			buf[6]= 0b01111110;
+			buf[7]= 0b01111110;
+			break;
+		}
 	}
 }
-}
-/******************************************************************/
+
+
 void displayInitHT16K33(uint8_t i2c_address) 
-/*
-short:
-inputs:
-outputs:
-notes:
-Version :    	DMK, Initial code
-*******************************************************************/
 {
-	// System setup page 30 ht16k33 datasheet
+							// System setup page 30 ht16k33 datasheet
 	twi_start();
 	twi_tx(i2c_address);	// Display I2C addres + R/W bit
-	twi_tx(0x21);	// Internal osc on (page 10 HT16K33)
+	twi_tx(0x21);			// Internal osc on (page 10 HT16K33)
 	twi_stop();
 		
-	// ROW/INT set. Page 31 ht16k33 datasheet
+							// ROW/INT set. Page 31 ht16k33 datasheet
 	twi_start();
 	twi_tx(i2c_address);	// Display I2C address + R/W bit
-	twi_tx(0xA0);	// HT16K33 pins all output (default)
+	twi_tx(0xA0);			// HT16K33 pins all output (default)
 	twi_stop();
 
-	// Dimming set
+							// Dimming set
 	twi_start();
 	twi_tx(i2c_address);	// Display I2C address + R/W bit
-	twi_tx(0xE1);	// Display Dimming 2/16 duty cycle
+	twi_tx(0xE1);			// Display Dimming 2/16 duty cycle
 	twi_stop();
 
-	// Display set
+							// Display set
 	twi_start();
 	twi_tx(i2c_address);	// Display I2C address + R/W bit
 	twi_tx(0x81);			// Display ON, Blinking OFF
 	twi_stop();
 	
-	// Beeld een patroon af op display (test)
+							// Beeld een patroon af op display (test)
 	twi_start();
 	twi_tx(i2c_address);
 	twi_tx(0x00);
@@ -169,30 +159,17 @@ Version :    	DMK, Initial code
 	twi_stop();
 }
 
-/******************************************************************/
 void displaySetPixel(uint8_t x, uint8_t y)
-/*
-short:			
-inputs:			
-outputs:		
-notes:			
-Version :    	DMK, Initial code
-*******************************************************************/
 {
-	//int binary[8]={1,2,4,8,16,32,64,128};
-		
-	uint8_t newByte = 1 << y;
-	//newByte = newByte << y;
-	
-	buf[x] = buf[x] | newByte;
-	
-	
-	
-	//buf[x] = binary[y];
+									//int binary[8]={1,2,4,8,16,32,64,128};
+		uint8_t newByte = 1 << y;
+									//newByte = newByte << y;
+		buf[x] = buf[x] | newByte;
+									//buf[x] = binary[y];
 }
 
-
-void setStartLocation(int x,int y){
+void setStartLocation(int x,int y)
+{
 	currentLocation.x = x;
 	currentLocation.y = y;
 	
@@ -204,37 +181,23 @@ void setStartLocation(int x,int y){
 }
 
 
-void displayDrawStart(){
+void displayDrawStart()
+{
 	displaySetPixel(locationList->location.x,locationList->location.y);
 	update();
 }
-/******************************************************************/
+
 void displayClrPixel(uint8_t x, uint8_t y)
-/*
-short:
-inputs:
-outputs:
-notes:
-Version :    	DMK, Initial code
-*******************************************************************/
 {
 	uint8_t newByte = 1 << y;
-	//newByte = newByte << y;
-	//writeLedDisplay(x+y * 100);
+								//newByte = newByte << y;
+								//writeLedDisplay(x+y * 100);
 	buf[x] = buf[x] ^ newByte;
 }
 
-/******************************************************************/
-void update()
-/*
-short:		Write buffer to display
-inputs:
-outputs:
-notes:		Let op de 'vreemde' shift, foutje in printplaat?
-Version:	DMK, Initial code
-*******************************************************************/
+void update( void )
 {
-	// Second display
+								// Second display
 	twi_start();
 	twi_tx(D0_I2C_ADDR);
 	twi_tx(0x00);
@@ -248,104 +211,40 @@ Version:	DMK, Initial code
 }
 
 
-/******************************************************************/
 void displayClr(void)
-/*
-short:		Clear display
-inputs:
-outputs:
-notes:
-Version:	DMK, Initial code
-*******************************************************************/
 {
 	for( uint8_t idx = 0; idx < width; idx++) {
 		buf[idx] = 0;
 	}
 }
 
-
-/******************************************************************/
-void displayChar(char ch, uint8_t x, uint8_t y)
-/*
-short:		Print character op display
-inputs:
-outputs:
-notes:
-Version:	DMK, Initial code
-*******************************************************************/
-{	
-}
-
-/******************************************************************/
-void displayString(char *str, uint8_t x, uint8_t y)
-/*
-short:		Print string op display
-inputs:
-outputs:
-notes:		Maakt gebruik van displayChar(..)
-Version:	DMK, Initial code
-*******************************************************************/
-{
-}
-
-
-/******************************************************************/
 void twi_init(void)
-/*
-short:			Init AVR TWI interface and set bitrate
-inputs:
-outputs:
-notes:			TWI clock is set to 100 kHz
-Version :    	DMK, Initial code
-*******************************************************************/
 {
 	TWSR = 0;
 	TWBR = 32;	 // TWI clock set to 100kHz, prescaler = 0
 }
 
-/******************************************************************/
 void twi_start(void)
-/*
-short:			Generate TWI start condition
-inputs:
-outputs:
-notes:
-Version :    	DMK, Initial code
-*******************************************************************/
 {
 	TWCR = (0x80 | 0x20 | 0x04);
 	while( 0x00 == (TWCR & 0x80) );
 }
 
-/******************************************************************/
 void twi_stop(void)
-/*
-short:			Generate TWI stop condition
-inputs:
-outputs:
-notes:
-Version :    	DMK, Initial code
-*******************************************************************/
 {
 	TWCR = (0x80 | 0x10 | 0x04);
 }
 
-/******************************************************************/
 void twi_tx(unsigned char data)
-/*
-short:			transmit 8 bits data
-inputs:
-outputs:
-notes:
-Version :    	DMK, Initial code
-*******************************************************************/
 {
+	//transmit 8 bits data
 	TWDR = data;
 	TWCR = (0x80 | 0x04);
 	while( 0 == (TWCR & 0x80) );
 }
 
-int getLocationListSize(){
+int getLocationListSize(void)
+{
 	LocationList *locationlist = locationList;
 	int locationListSize = 0;
 	while (locationlist != NULL){
@@ -355,12 +254,14 @@ int getLocationListSize(){
 	return locationListSize;
 }
 
-void increaseSnakeSize(){
+void increaseSnakeSize(void)
+{
 	maxSnakeSize++;
 	//calculateNewScoreAppleCollected();
 }
 
-void addCandy(){
+void addCandy(void)
+{
 	
 	//int random = (rand() % 8);
 
@@ -384,7 +285,9 @@ void addCandy(){
 	displaySetPixel(x,y);
 	update();
 }
-int checkForCollision(int x, int y){
+
+int checkForCollision(int x, int y)
+{
 	LocationList *locationlist = locationList;
 	while(locationlist != NULL){
 		if(locationlist->location.x == x && locationlist->location.y == y){
@@ -395,7 +298,8 @@ int checkForCollision(int x, int y){
 	return 0;
 }
 
-void resetDisplay(){
+void resetDisplay(void)
+{
 	LocationList *locationlist = locationList;
 	while(locationList == NULL){
 		while(locationlist->next != NULL){
@@ -409,32 +313,35 @@ void resetDisplay(){
 }
 
 
-int addLocation(int x, int y){
+int moveToNewLocation(int x, int y)
+{
+	int returnValue = 0;
+	
 	if(x == candy.x && y == candy.y){
 		increaseSnakeSize();
 		addCandy();
 		calculateNewScoreAppleCollected();
 	}
 	if(!checkForCollision(x,y)){
-	Location loc;
-	loc.x = x;
-	loc.y = y;
+	Location location;
+	location.x = x;
+	location.y = y;
 	calculateNewScoreMovement();
 	// add sound
 	int size = getLocationListSize();
 	if(size < maxSnakeSize){
 		displaySetPixel(x,y);
-		LocationList *p = locationList;
-		while(p->next != NULL){
-			p = p->next;
+		LocationList *locactionlist = locationList;
+		while(locactionlist->next != NULL){
+			locactionlist = locactionlist->next;
 		}
 		
-		LocationList *newLoc = (LocationList *)malloc(sizeof(LocationList));
-		newLoc->location = loc;
-		newLoc->number = counter;
+		LocationList *newLocation = (LocationList *)malloc(sizeof(LocationList));
+		newLocation->location = location;
+		newLocation->number = counter;
 		//writeLedDisplay(counter);
-		newLoc->next = NULL;
-		p->next = newLoc;
+		newLocation->next = NULL;
+		locactionlist->next = newLocation;
 		
 		counter++;
 		currentLocation.x = x;
@@ -442,54 +349,56 @@ int addLocation(int x, int y){
 	}else{
 		//writeLedDisplay(2);
 		displaySetPixel(x,y);
-		LocationList *p = locationList;
-		int min = p->number;
-		int c = 0;
+		LocationList *locationlist = locationList;
+		int minimal = locationlist->number;
+		int locationCounter = 0;
 		int position = 0;
-		while(p != NULL){
-			if(p->number < min){
-				min = p->number;
-				position = c;
+		while(locationlist != NULL){
+			if(locationlist->number < minimal){
+				minimal = locationlist->number;
+				position = locationCounter;
 			}
-			c++;
-			p = p->next;
+			locationCounter++;
+			locationlist = locationlist->next;
 		}
 		
 		
 		//writeLedDisplay(position);
-		p = locationList;
-		c = 0;
-		LocationList *newLoc = (LocationList *)malloc(sizeof(LocationList));
-		LocationList *pervLoc = NULL; 
-		while(p != NULL){
-			if(c == position){
-				displayClrPixel(p->location.x,p->location.y);
+		locationlist = locationList;
+		locationCounter = 0;
+		LocationList *newLocation = (LocationList *)malloc(sizeof(LocationList));
+		LocationList *previousLocation = NULL; 
+		while(locationlist != NULL){
+			if(locationCounter == position){
+				displayClrPixel(locationlist->location.x,locationlist->location.y);
 			//	writeLedDisplay(p->number);
-				newLoc->location = loc;
-				newLoc->number = counter;
-				newLoc->next = p->next;
+				newLocation->location = location;
+				newLocation->number = counter;
+				newLocation->next = locationlist->next;
 				counter++;
-				free(p);
+				free(locationlist);
 				if(position == 0){
-					locationList = newLoc;	
+					locationList = newLocation;	
 				}else{
-					pervLoc->next = newLoc;
+					previousLocation->next = newLocation;
 				}
 				currentLocation.x = x;
 				currentLocation.y = y;
 				break;
 			}
-			pervLoc = p;
-			p = p->next;
-			c++;
+			previousLocation = locationlist;
+			locationlist = locationlist->next;
+			locationCounter++;
 			
 		}
-		return 1;
+		returnValue = 1;
 		}
-	}else{
+	}else
+	{
 		displayClr();
-		return 0;
+		returnValue = 0;
 	}
+	return returnValue;
 }
 		
 					
@@ -520,7 +429,7 @@ int addLocation(int x, int y){
 	
 
 
-int moveUp(){
+int moveSnakeUp(){
 	
 	int x = currentLocation.x;
 	int y = currentLocation.y;
@@ -529,7 +438,7 @@ int moveUp(){
 	if(x == -1){
 		x = 7;
 	}
-	if(addLocation(x,y)){
+	if(moveToNewLocation(x,y)){
 		update();
 		return 1;
 	}else{
@@ -537,7 +446,7 @@ int moveUp(){
 	}
 	
 }
-int moveDown(){
+int moveSnakeDown(){
 	int x = currentLocation.x;
 	int y = currentLocation.y;
 	
@@ -545,7 +454,7 @@ int moveDown(){
 	if(x == 8){
 		x = 0;
 	}
-	if(addLocation(x,y)){
+	if(moveToNewLocation(x,y)){
 		update();
 		return 1;
 	}else{
@@ -553,7 +462,7 @@ int moveDown(){
 	}
 }
 
-int moveLeft(){
+int moveSnakeLeft(){
 	int x = currentLocation.x;
 	int y = currentLocation.y;
 
@@ -561,7 +470,7 @@ int moveLeft(){
 	if(y == 8){
 		y = 0;
 	}
-	if(addLocation(x,y)){
+	if(moveToNewLocation(x,y)){
 		update();
 		return 1;
 		}else{
@@ -569,7 +478,7 @@ int moveLeft(){
 	}
 }
 
-int moveRight(){
+int moveSnakeRight(){
 	int x = currentLocation.x;
 	int y = currentLocation.y;
 	
@@ -577,7 +486,7 @@ int moveRight(){
 	if(y == -1){
 		y = 7;
 	}
-	if(addLocation(x,y)){
+	if(moveToNewLocation(x,y)){
 		update();
 		return 1;
 		}else{

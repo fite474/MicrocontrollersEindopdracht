@@ -47,7 +47,7 @@ ISR( TIMER2_COMP_vect )
 				switch (status)
 				{
 					case GOING_UP:
-					if(!moveUp())
+					if(!moveSnakeUp())
 					{
 						gStatus = GAMEOVER;
 					}
@@ -55,7 +55,7 @@ ISR( TIMER2_COMP_vect )
 		
 		
 					case GOING_DOWN :
-					if(!moveDown())
+					if(!moveSnakeDown())
 					{
 						gStatus = GAMEOVER;
 					}
@@ -63,7 +63,7 @@ ISR( TIMER2_COMP_vect )
 		
 		
 					case GOING_LEFT:
-					if(!moveLeft())
+					if(!moveSnakeLeft())
 					{
 						gStatus = GAMEOVER;
 					}
@@ -71,7 +71,7 @@ ISR( TIMER2_COMP_vect )
 			
 			
 					case GOING_RIGHT:
-					if(!moveRight())
+					if(!moveSnakeRight())
 					{
 						gStatus = GAMEOVER;
 					}
@@ -152,7 +152,7 @@ void startGame()
 
 int main(void)
 {
-	//initializatie voor het scoreBord
+								//initializatie voor het scoreBord
 	DDRB=0x01;					// Set PB0 pin as output for display select
 	spi_masterInit();			// Initialize spi module
 	displayDriverInit();		// Initialize display chip
@@ -163,11 +163,9 @@ int main(void)
 
 	//addCandy();
 	setStartLocation(4,4);
-	
-	
+
 		//EICRA |= 0x30;			// INT2 rising edge
 		//EIMSK |= 0x04;			// Enable INT2
-	
 	
 	    OCR2 = 519;
 	    TCCR2 = 1<<WGM21;
@@ -178,8 +176,6 @@ int main(void)
 	sei();
 
 	//startGame();
-	
-	
 	
 	while (1)
 	{

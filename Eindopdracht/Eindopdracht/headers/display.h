@@ -5,7 +5,6 @@
  *  Author: Bram 
  */ 
 
-
 #ifndef DISPLAY_H_
 #define DISPLAY_H_
 
@@ -15,31 +14,33 @@
 #include <time.h>
 
 void displayInit(void);
+void startLoaction(void);
 void drawImage(void);
+void drawCounting(int number);
+void displayInitHT16K33(uint8_t i2c_address) ;
 void displaySetPixel(uint8_t x, uint8_t y);
+void setStartLocation(int x,int y);
+void displayDrawStart();
 void displayClrPixel(uint8_t x, uint8_t y);
-void displayChar(char ch, uint8_t x, uint8_t y);
-void displayString(char *str, uint8_t x, uint8_t y);
-void displayRotl(void);
-void displayRotr(void);
+void update(void);
 void displayClr(void);
 
-void update(void);
+void twi_init(void);
+void twi_start(void);
+void twi_stop(void);
+void twi_tx(unsigned char data);
 
-int moveUp(void);
-int moveDown(void);
-int moveLeft(void);
-int moveRight(void);
-void setStartLocation(int x,int y);
-
+int getLocationListSize(void);
 void increaseSnakeSize(void);
 void addCandy(void);
-
-void drawCounting(int number);
-void displayDrawStart(void);
+int checkForCollision(int x, int y);
 void resetDisplay(void);
 
-
+int moveToNewLocation(int x, int y);
+int moveSnakeUp(void);
+int moveSnakeDown(void);
+int moveSnakeLeft(void);
+int moveSnakeRight(void);
 
 
 #endif /* DISPLAY_H_ */
