@@ -5,12 +5,9 @@
  *  Author: Timo
  */ 
 
-
 #ifndef WAIT_H_
 #define WAIT_H_
 
 void wait( int ms );
-
-
 
 #endif /* WAIT_H_ */

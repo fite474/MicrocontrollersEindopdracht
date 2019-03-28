@@ -2,7 +2,7 @@
  * display.h
  *
  * Created: 1/16/2018 8:17:18 AM
- *  Author: Gebruiker
+ *  Author: Bram 
  */ 
 
 

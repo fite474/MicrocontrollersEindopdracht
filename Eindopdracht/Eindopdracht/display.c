@@ -8,10 +8,9 @@
 #include <avr/io.h>
 
 
-
-#include "FourSegmentDisplay.h"
-#include "display.h"
-#include "fonts.h"
+#include "headers/FourSegmentDisplay.h"
+#include "headers/display.h"
+#include "headers/fonts.h"
 
 // HT16K33 routines
 void displayInitHT16K33(uint8_t i2c_address);

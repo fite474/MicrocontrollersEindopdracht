@@ -2,105 +2,131 @@
  * Eindopdracht.c
  *
  * Created: 26-3-2019 15:05:34
- * Author : mauri
+ * Author : Maurice
  */ 
 
-#include <avr/io.h>
-#include <avr/interrupt.h>
-
-#include "display.h"
-#include "wait.h"
-#include "fourSegmentDisplay.h"
-#include "buttons.h"
+//defines
 #define F_CPU 8000000
 
-int tick = 0;
-enum gameStatus{COUNTING, PLAYING, GAMEOVER};
+//includes
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include "headers/display.h"
+#include "headers/wait.h"
+#include "headers/fourSegmentDisplay.h"
+#include "headers/buttons.h"
 
+//variables
+enum gameStatus{COUNTING, PLAYING, GAMEOVER};
 enum gameStatus gStatus = COUNTING;
 enum eStatus status = GOING_UP;
+
+int tick = 0;
 int check = 1;
 
 
 ISR( TIMER2_COMP_vect )
 {
-	switch(gStatus){
-	case PLAYING :{
-	
-	if(check){
-	enum eStatus newStatus = checkDirection();
-	if(status != newStatus){
-		check = 0;
-			status = newStatus;//checkDirection();
-
-		}
-	}
-	//status = checkDirection();
-	if (tick == 200)
+	switch(gStatus)
 	{
-		tick = 0;
-		switch (status)
+		case PLAYING :
 		{
-		case GOING_UP:
-			if(!moveUp()){
-				gStatus = GAMEOVER;
+			if(check)
+			{
+				enum eStatus newStatus = checkDirection();
+				if(status != newStatus)
+				{
+				check = 0;
+				status = newStatus;//checkDirection();
+				}
 			}
-			break;
-		case GOING_DOWN:
-			if(!moveDown()){
-				gStatus = GAMEOVER;
+			//status = checkDirection();
+			if (tick == 200)
+			{
+				tick = 0;
+				switch (status)
+				{
+					case GOING_UP:
+					if(!moveUp())
+					{
+						gStatus = GAMEOVER;
+					}
+				break;
+		
+		
+					case GOING_DOWN :
+					if(!moveDown())
+					{
+						gStatus = GAMEOVER;
+					}
+				break;
+		
+		
+					case GOING_LEFT:
+					if(!moveLeft())
+					{
+						gStatus = GAMEOVER;
+					}
+				break;
+			
+			
+					case GOING_RIGHT:
+					if(!moveRight())
+					{
+						gStatus = GAMEOVER;
+					}
+				break;
+		
+		
+					case WAITING:
+				break;
+				}
+			check = 1;
 			}
-			break;
-		case GOING_LEFT:
-			if(!moveLeft()){
-				gStatus = GAMEOVER;
-			}
-			break;
-		case GOING_RIGHT:
-			if(!moveRight()){
-				gStatus = GAMEOVER;
-			}
-			break;
-		case WAITING:
-			break;
-		}
-		check = 1;
-	}
-	break;
-	}
-	case COUNTING :{
-		if(tick == 700){
-			drawCounting(3);
-			update();
-		}else
-		if(tick == 1400){
-			drawCounting(2);
-			update();
-		}else
-		if(tick == 2100){
-			drawCounting(1);
-			update();
-		}else
-		if (tick == 2800)
-		{
-			displayClr();
-			displayDrawStart();
-			addCandy();
-			update();
-			gStatus = PLAYING;
-			check = 0;
-			tick = 0;
+		break;
 		}
 		
-		break;
-	}
-	case GAMEOVER :
-	{
-		if(1 == tick){
-			drawImage();
-			update();
-		}else
-		if(tick > 4000){
+		
+		case COUNTING :
+		{
+			if(tick == 700)
+			{
+				drawCounting(3);
+				update();
+			}else
+			if(tick == 1400)
+			{
+				drawCounting(2);
+				update();
+			}else
+			if(tick == 2100)
+			{
+				drawCounting(1);
+				update();
+			}else
+			if (tick == 2800)
+			{
+				displayClr();
+				displayDrawStart();
+				addCandy();
+				update();
+				gStatus = PLAYING;
+				check = 0;
+				tick = 0;
+			}
+			break;
+		}
+	
+	
+		case GAMEOVER :
+		{
+			if(1 == tick)
+			{
+				drawImage();
+				update();
+			}else
+			if(tick > 4000)
+			{
 				gStatus = COUNTING;
 				displayReset();
 				resetScore();
@@ -108,9 +134,9 @@ ISR( TIMER2_COMP_vect )
 				update();
 				setStartLocation(4,4);
 				tick = 0;
+			}
+			break;
 		}
-		break;
-	}
 	}
 	tick++;
 }
@@ -119,9 +145,8 @@ void startGame()
 {
 	while (WAITING == checkDirection())
 	{
-	}
 		
-
+	}
 }
 
 
@@ -139,10 +164,10 @@ int main(void)
 	//addCandy();
 	setStartLocation(4,4);
 	
-	//
+	
 		//EICRA |= 0x30;			// INT2 rising edge
 		//EIMSK |= 0x04;			// Enable INT2
-	//
+	
 	
 	    OCR2 = 519;
 	    TCCR2 = 1<<WGM21;
@@ -158,6 +183,7 @@ int main(void)
 	
 	while (1)
 	{
+		
 	}
 }
 

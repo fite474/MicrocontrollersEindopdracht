@@ -19,15 +19,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   7 .debug_abbrev 00000da0  00000000  00000000  00003161  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00001192  00000000  00000000  00003f01  2**0
+  8 .debug_line   000011b9  00000000  00000000  00003f01  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  0000042c  00000000  00000000  00005094  2**2
+  9 .debug_frame  0000042c  00000000  00000000  000050bc  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000007f7  00000000  00000000  000054c0  2**0
+ 10 .debug_str    0000081c  00000000  00000000  000054e8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000e9b  00000000  00000000  00005cb7  2**0
+ 11 .debug_loc    00000e9b  00000000  00000000  00005d04  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000001b0  00000000  00000000  00006b52  2**0
+ 12 .debug_ranges 000001b0  00000000  00000000  00006b9f  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -1858,11 +1858,11 @@ void calculateNewScoreMovement()
  916:	08 95       	ret
 
 00000918 <__vector_9>:
+{
 	while (WAITING == checkDirection())
 	{
-	}
 		
-
+	}
 }
  918:	1f 92       	push	r1
  91a:	0f 92       	push	r0
@@ -1883,7 +1883,7 @@ void calculateNewScoreMovement()
  938:	bf 93       	push	r27
  93a:	ef 93       	push	r30
  93c:	ff 93       	push	r31
- 93e:	80 91 14 01 	lds	r24, 0x0114	; 0x800114 <gStatus>
+ 93e:	80 91 16 01 	lds	r24, 0x0116	; 0x800116 <gStatus>
  942:	81 30       	cpi	r24, 0x01	; 1
  944:	31 f0       	breq	.+12     	; 0x952 <__vector_9+0x3a>
  946:	08 f4       	brcc	.+2      	; 0x94a <__vector_9+0x32>
@@ -1897,21 +1897,21 @@ void calculateNewScoreMovement()
  95a:	89 2b       	or	r24, r25
  95c:	59 f0       	breq	.+22     	; 0x974 <__vector_9+0x5c>
  95e:	c7 db       	rcall	.-2162   	; 0xee <checkDirection>
- 960:	90 91 13 01 	lds	r25, 0x0113	; 0x800113 <status>
+ 960:	90 91 15 01 	lds	r25, 0x0115	; 0x800115 <status>
  964:	89 17       	cp	r24, r25
  966:	31 f0       	breq	.+12     	; 0x974 <__vector_9+0x5c>
  968:	10 92 0d 01 	sts	0x010D, r1	; 0x80010d <check+0x1>
  96c:	10 92 0c 01 	sts	0x010C, r1	; 0x80010c <check>
- 970:	80 93 13 01 	sts	0x0113, r24	; 0x800113 <status>
- 974:	80 91 15 01 	lds	r24, 0x0115	; 0x800115 <tick>
- 978:	90 91 16 01 	lds	r25, 0x0116	; 0x800116 <tick+0x1>
+ 970:	80 93 15 01 	sts	0x0115, r24	; 0x800115 <status>
+ 974:	80 91 13 01 	lds	r24, 0x0113	; 0x800113 <tick>
+ 978:	90 91 14 01 	lds	r25, 0x0114	; 0x800114 <tick+0x1>
  97c:	88 3c       	cpi	r24, 0xC8	; 200
  97e:	91 05       	cpc	r25, r1
  980:	09 f0       	breq	.+2      	; 0x984 <__vector_9+0x6c>
  982:	7e c0       	rjmp	.+252    	; 0xa80 <__vector_9+0x168>
- 984:	10 92 16 01 	sts	0x0116, r1	; 0x800116 <tick+0x1>
- 988:	10 92 15 01 	sts	0x0115, r1	; 0x800115 <tick>
- 98c:	80 91 13 01 	lds	r24, 0x0113	; 0x800113 <status>
+ 984:	10 92 14 01 	sts	0x0114, r1	; 0x800114 <tick+0x1>
+ 988:	10 92 13 01 	sts	0x0113, r1	; 0x800113 <tick>
+ 98c:	80 91 15 01 	lds	r24, 0x0115	; 0x800115 <status>
  990:	81 30       	cpi	r24, 0x01	; 1
  992:	69 f0       	breq	.+26     	; 0x9ae <__vector_9+0x96>
  994:	28 f0       	brcs	.+10     	; 0x9a0 <__vector_9+0x88>
@@ -1924,32 +1924,32 @@ void calculateNewScoreMovement()
  9a2:	89 2b       	or	r24, r25
  9a4:	c1 f4       	brne	.+48     	; 0x9d6 <__vector_9+0xbe>
  9a6:	82 e0       	ldi	r24, 0x02	; 2
- 9a8:	80 93 14 01 	sts	0x0114, r24	; 0x800114 <gStatus>
+ 9a8:	80 93 16 01 	sts	0x0116, r24	; 0x800116 <gStatus>
  9ac:	14 c0       	rjmp	.+40     	; 0x9d6 <__vector_9+0xbe>
  9ae:	a8 de       	rcall	.-688    	; 0x700 <moveDown>
  9b0:	89 2b       	or	r24, r25
  9b2:	89 f4       	brne	.+34     	; 0x9d6 <__vector_9+0xbe>
  9b4:	82 e0       	ldi	r24, 0x02	; 2
- 9b6:	80 93 14 01 	sts	0x0114, r24	; 0x800114 <gStatus>
+ 9b6:	80 93 16 01 	sts	0x0116, r24	; 0x800116 <gStatus>
  9ba:	0d c0       	rjmp	.+26     	; 0x9d6 <__vector_9+0xbe>
  9bc:	b4 de       	rcall	.-664    	; 0x726 <moveLeft>
  9be:	89 2b       	or	r24, r25
  9c0:	51 f4       	brne	.+20     	; 0x9d6 <__vector_9+0xbe>
  9c2:	82 e0       	ldi	r24, 0x02	; 2
- 9c4:	80 93 14 01 	sts	0x0114, r24	; 0x800114 <gStatus>
+ 9c4:	80 93 16 01 	sts	0x0116, r24	; 0x800116 <gStatus>
  9c8:	06 c0       	rjmp	.+12     	; 0x9d6 <__vector_9+0xbe>
  9ca:	c1 de       	rcall	.-638    	; 0x74e <moveRight>
  9cc:	89 2b       	or	r24, r25
  9ce:	19 f4       	brne	.+6      	; 0x9d6 <__vector_9+0xbe>
  9d0:	82 e0       	ldi	r24, 0x02	; 2
- 9d2:	80 93 14 01 	sts	0x0114, r24	; 0x800114 <gStatus>
+ 9d2:	80 93 16 01 	sts	0x0116, r24	; 0x800116 <gStatus>
  9d6:	81 e0       	ldi	r24, 0x01	; 1
  9d8:	90 e0       	ldi	r25, 0x00	; 0
  9da:	90 93 0d 01 	sts	0x010D, r25	; 0x80010d <check+0x1>
  9de:	80 93 0c 01 	sts	0x010C, r24	; 0x80010c <check>
  9e2:	4e c0       	rjmp	.+156    	; 0xa80 <__vector_9+0x168>
- 9e4:	80 91 15 01 	lds	r24, 0x0115	; 0x800115 <tick>
- 9e8:	90 91 16 01 	lds	r25, 0x0116	; 0x800116 <tick+0x1>
+ 9e4:	80 91 13 01 	lds	r24, 0x0113	; 0x800113 <tick>
+ 9e8:	90 91 14 01 	lds	r25, 0x0114	; 0x800114 <tick+0x1>
  9ec:	8c 3b       	cpi	r24, 0xBC	; 188
  9ee:	22 e0       	ldi	r18, 0x02	; 2
  9f0:	92 07       	cpc	r25, r18
@@ -1985,14 +1985,14 @@ void calculateNewScoreMovement()
  a2c:	e0 dc       	rcall	.-1600   	; 0x3ee <addCandy>
  a2e:	9b dc       	rcall	.-1738   	; 0x366 <update>
  a30:	81 e0       	ldi	r24, 0x01	; 1
- a32:	80 93 14 01 	sts	0x0114, r24	; 0x800114 <gStatus>
+ a32:	80 93 16 01 	sts	0x0116, r24	; 0x800116 <gStatus>
  a36:	10 92 0d 01 	sts	0x010D, r1	; 0x80010d <check+0x1>
  a3a:	10 92 0c 01 	sts	0x010C, r1	; 0x80010c <check>
- a3e:	10 92 16 01 	sts	0x0116, r1	; 0x800116 <tick+0x1>
- a42:	10 92 15 01 	sts	0x0115, r1	; 0x800115 <tick>
+ a3e:	10 92 14 01 	sts	0x0114, r1	; 0x800114 <tick+0x1>
+ a42:	10 92 13 01 	sts	0x0113, r1	; 0x800113 <tick>
  a46:	1c c0       	rjmp	.+56     	; 0xa80 <__vector_9+0x168>
- a48:	80 91 15 01 	lds	r24, 0x0115	; 0x800115 <tick>
- a4c:	90 91 16 01 	lds	r25, 0x0116	; 0x800116 <tick+0x1>
+ a48:	80 91 13 01 	lds	r24, 0x0113	; 0x800113 <tick>
+ a4c:	90 91 14 01 	lds	r25, 0x0114	; 0x800114 <tick+0x1>
  a50:	81 30       	cpi	r24, 0x01	; 1
  a52:	91 05       	cpc	r25, r1
  a54:	19 f4       	brne	.+6      	; 0xa5c <__vector_9+0x144>
@@ -2002,7 +2002,7 @@ void calculateNewScoreMovement()
  a5c:	81 3a       	cpi	r24, 0xA1	; 161
  a5e:	9f 40       	sbci	r25, 0x0F	; 15
  a60:	7c f0       	brlt	.+30     	; 0xa80 <__vector_9+0x168>
- a62:	10 92 14 01 	sts	0x0114, r1	; 0x800114 <gStatus>
+ a62:	10 92 16 01 	sts	0x0116, r1	; 0x800116 <gStatus>
  a66:	3a dd       	rcall	.-1420   	; 0x4dc <displayReset>
  a68:	4e df       	rcall	.-356    	; 0x906 <resetScore>
  a6a:	0d dc       	rcall	.-2022   	; 0x286 <displayClr>
@@ -2012,13 +2012,13 @@ void calculateNewScoreMovement()
  a72:	84 e0       	ldi	r24, 0x04	; 4
  a74:	90 e0       	ldi	r25, 0x00	; 0
  a76:	cf db       	rcall	.-2146   	; 0x216 <setStartLocation>
- a78:	10 92 16 01 	sts	0x0116, r1	; 0x800116 <tick+0x1>
- a7c:	10 92 15 01 	sts	0x0115, r1	; 0x800115 <tick>
- a80:	80 91 15 01 	lds	r24, 0x0115	; 0x800115 <tick>
- a84:	90 91 16 01 	lds	r25, 0x0116	; 0x800116 <tick+0x1>
+ a78:	10 92 14 01 	sts	0x0114, r1	; 0x800114 <tick+0x1>
+ a7c:	10 92 13 01 	sts	0x0113, r1	; 0x800113 <tick>
+ a80:	80 91 13 01 	lds	r24, 0x0113	; 0x800113 <tick>
+ a84:	90 91 14 01 	lds	r25, 0x0114	; 0x800114 <tick+0x1>
  a88:	01 96       	adiw	r24, 0x01	; 1
- a8a:	90 93 16 01 	sts	0x0116, r25	; 0x800116 <tick+0x1>
- a8e:	80 93 15 01 	sts	0x0115, r24	; 0x800115 <tick>
+ a8a:	90 93 14 01 	sts	0x0114, r25	; 0x800114 <tick+0x1>
+ a8e:	80 93 13 01 	sts	0x0113, r24	; 0x800113 <tick>
  a92:	ff 91       	pop	r31
  a94:	ef 91       	pop	r30
  a96:	bf 91       	pop	r27
@@ -2054,7 +2054,7 @@ int main(void)
  abe:	7b de       	rcall	.-778    	; 0x7b6 <displayDriverInit>
  ac0:	84 e0       	ldi	r24, 0x04	; 4
 	status = WAITING;
- ac2:	80 93 13 01 	sts	0x0113, r24	; 0x800113 <status>
+ ac2:	80 93 15 01 	sts	0x0115, r24	; 0x800115 <status>
 	displayInit();
  ac6:	3f dc       	rcall	.-1922   	; 0x346 <displayInit>
 	wait(500);
@@ -2073,10 +2073,10 @@ int main(void)
  ad8:	90 e0       	ldi	r25, 0x00	; 0
  ada:	9d db       	rcall	.-2246   	; 0x216 <setStartLocation>
  adc:	87 e0       	ldi	r24, 0x07	; 7
-	//
+	
 		//EICRA |= 0x30;			// INT2 rising edge
 		//EIMSK |= 0x04;			// Enable INT2
-	//
+	
 	
 	    OCR2 = 519;
  ade:	83 bd       	out	0x23, r24	; 35

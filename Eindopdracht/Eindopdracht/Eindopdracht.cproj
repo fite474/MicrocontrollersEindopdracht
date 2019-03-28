@@ -141,22 +141,25 @@
     <Compile Include="buttons.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="buttons.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="display.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="display.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="fonts.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="fourSegmentDisplay.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="fourSegmentDisplay.h">
+    <Compile Include="headers\buttons.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="headers\display.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="headers\fonts.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="headers\fourSegmentDisplay.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="headers\wait.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
@@ -165,9 +168,9 @@
     <Compile Include="wait.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="wait.h">
-      <SubType>compile</SubType>
-    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="headers" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>

@@ -1,14 +1,12 @@
-
 /*
  * buttons.c
  *
  * Created: 26-3-2019 17:19:58
- *  Author: mauri
+ *  Author: Maurice
  */ 
 
 #include <avr/io.h>
-#include "buttons.h"
-
+#include "headers/buttons.h"
 
 enum eStatus moving = GOING_UP;
 
