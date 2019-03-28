@@ -6,9 +6,9 @@
  */ 
 
 #include <avr/io.h>
-#include "display.h"
-#include "wait.h"
-#include "fourSegmentDisplay.h"
+#include "headers/display.h"
+#include "headers/wait.h"
+#include "headers/fourSegmentDisplay.h"
 
 
 int main(void)

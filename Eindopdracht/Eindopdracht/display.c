@@ -10,9 +10,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "FourSegmentDisplay.h"
-#include "display.h"
-#include "fonts.h"
+#include "headers/FourSegmentDisplay.h"
+#include "headers/display.h"
+#include "headers/fonts.h"
 
 // HT16K33 routines
 void displayInitHT16K33(uint8_t i2c_address);
@@ -41,9 +41,9 @@ typedef struct{
 	locatie loc;
 	int number;
 	void* next;	
-	}locatieList;
+	}locationList;
 
-locatieList *locList;
+locationList *locList;
 
 locatie currenLocation;
 /******************************************************************/
@@ -65,7 +65,6 @@ void startLoaction(void){
 	locatie loc;
 
 }
-
 
 void drawImage(void){
 	
@@ -153,7 +152,7 @@ void setStartLocation(int x,int y){
 	currenLocation.x = x;
 	currenLocation.y = y;
 	
-	locList = (locatieList *)malloc(sizeof(locatieList));
+	locList = (locationList *)malloc(sizeof(locationList));
 	locList->loc = currenLocation;
 	locList->number = counter;
 	locList->next = NULL;
@@ -322,8 +321,8 @@ Version :    	DMK, Initial code
 	while( 0 == (TWCR & 0x80) );
 }
 
-int getSize(){
-	locatieList *p = locList;
+int getLocationListSize(){
+	locationList *p = locList;
 	int size = 0;
 	while (p != NULL){
 		size++;
@@ -344,15 +343,15 @@ void addLocation(int x, int y){
 	loc.y = y;
 	calculateNewScoreMovement();
 	// add sound
-	int size = getSize();
+	int size = getLocationListSize();
 	if(size < maxSize){
 		displaySetPixel(x,y);
-		locatieList *p = locList;
+		locationList *p = locList;
 		while(p->next != NULL){
 			p = p->next;
 		}
 		
-		locatieList *newLoc = (locatieList *)malloc(sizeof(locatieList));
+		locationList *newLoc = (locationList *)malloc(sizeof(locationList));
 		newLoc->loc = loc;
 		newLoc->number = counter;
 		//writeLedDisplay(counter);
@@ -365,7 +364,7 @@ void addLocation(int x, int y){
 	}else{
 		//writeLedDisplay(2);
 		displaySetPixel(x,y);
-		locatieList *p = locList;
+		locationList *p = locList;
 		int min = p->number;
 		int c = 0;
 		int position = 0;
@@ -382,8 +381,8 @@ void addLocation(int x, int y){
 		//writeLedDisplay(position);
 		p = locList;
 		c = 0;
-		locatieList *newLoc = (locatieList *)malloc(sizeof(locatieList));
-		locatieList *pervLoc = NULL; 
+		locationList *newLoc = (locationList *)malloc(sizeof(locationList));
+		locationList *pervLoc = NULL; 
 		while(p != NULL){
 			if(c == position){
 				displayClrPixel(p->loc.x,p->loc.y);

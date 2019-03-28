@@ -19,15 +19,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   7 .debug_abbrev 00000c6a  00000000  00000000  000027d2  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000ced  00000000  00000000  0000343c  2**0
+  8 .debug_line   00000d07  00000000  00000000  0000343c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000354  00000000  00000000  0000412c  2**2
+  9 .debug_frame  00000354  00000000  00000000  00004144  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000006f3  00000000  00000000  00004480  2**0
+ 10 .debug_str    00000725  00000000  00000000  00004498  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000b87  00000000  00000000  00004b73  2**0
+ 11 .debug_loc    00000b87  00000000  00000000  00004bbd  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000150  00000000  00000000  000056fa  2**0
+ 12 .debug_ranges 00000150  00000000  00000000  00005744  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -474,7 +474,7 @@ void setStartLocation(int x,int y){
  210:	62 83       	std	Z+2, r22	; 0x02
  212:	73 83       	std	Z+3, r23	; 0x03
 	
-	locList = (locatieList *)malloc(sizeof(locatieList));
+	locList = (locationList *)malloc(sizeof(locationList));
  214:	88 e0       	ldi	r24, 0x08	; 8
  216:	90 e0       	ldi	r25, 0x00	; 0
  218:	85 d2       	rcall	.+1290   	; 0x724 <malloc>
@@ -515,19 +515,19 @@ void setStartLocation(int x,int y){
  262:	cf 91       	pop	r28
  264:	08 95       	ret
 
-00000266 <getSize>:
+00000266 <getLocationListSize>:
 	TWCR = (0x80 | 0x04);
 	while( 0 == (TWCR & 0x80) );
 }
 
-int getSize(){
-	locatieList *p = locList;
+int getLocationListSize(){
+	locationList *p = locList;
  266:	e0 91 0c 01 	lds	r30, 0x010C	; 0x80010c <locList>
  26a:	f0 91 0d 01 	lds	r31, 0x010D	; 0x80010d <locList+0x1>
 	int size = 0;
 	while (p != NULL){
  26e:	30 97       	sbiw	r30, 0x00	; 0
- 270:	49 f0       	breq	.+18     	; 0x284 <getSize+0x1e>
+ 270:	49 f0       	breq	.+18     	; 0x284 <getLocationListSize+0x1e>
  272:	80 e0       	ldi	r24, 0x00	; 0
  274:	90 e0       	ldi	r25, 0x00	; 0
 		size++;
@@ -538,18 +538,18 @@ int getSize(){
  27c:	e0 2d       	mov	r30, r0
 }
 
-int getSize(){
-	locatieList *p = locList;
+int getLocationListSize(){
+	locationList *p = locList;
 	int size = 0;
 	while (p != NULL){
  27e:	30 97       	sbiw	r30, 0x00	; 0
- 280:	d1 f7       	brne	.-12     	; 0x276 <getSize+0x10>
+ 280:	d1 f7       	brne	.-12     	; 0x276 <getLocationListSize+0x10>
  282:	08 95       	ret
 	while( 0 == (TWCR & 0x80) );
 }
 
-int getSize(){
-	locatieList *p = locList;
+int getLocationListSize(){
+	locationList *p = locList;
 	int size = 0;
  284:	80 e0       	ldi	r24, 0x00	; 0
  286:	90 e0       	ldi	r25, 0x00	; 0
@@ -602,9 +602,9 @@ void addLocation(int x, int y){
 	loc.y = y;
 	calculateNewScoreMovement();
  2c4:	9f d1       	rcall	.+830    	; 0x604 <calculateNewScoreMovement>
-	
-	int size = getSize();
- 2c6:	cf df       	rcall	.-98     	; 0x266 <getSize>
+	// add sound
+	int size = getLocationListSize();
+ 2c6:	cf df       	rcall	.-98     	; 0x266 <getLocationListSize>
  2c8:	20 91 06 01 	lds	r18, 0x0106	; 0x800106 <maxSize>
 	if(size < maxSize){
  2cc:	30 91 07 01 	lds	r19, 0x0107	; 0x800107 <maxSize+0x1>
@@ -616,18 +616,18 @@ void addLocation(int x, int y){
  2d8:	89 2d       	mov	r24, r9
  2da:	f6 de       	rcall	.-532    	; 0xc8 <displaySetPixel>
  2dc:	c0 91 0c 01 	lds	r28, 0x010C	; 0x80010c <locList>
-		locatieList *p = locList;
+		locationList *p = locList;
  2e0:	d0 91 0d 01 	lds	r29, 0x010D	; 0x80010d <locList+0x1>
  2e4:	01 c0       	rjmp	.+2      	; 0x2e8 <addLocation+0x48>
 		while(p->next != NULL){
  2e6:	ec 01       	movw	r28, r24
 			p = p->next;
  2e8:	8e 81       	ldd	r24, Y+6	; 0x06
-	
-	int size = getSize();
+	// add sound
+	int size = getLocationListSize();
 	if(size < maxSize){
 		displaySetPixel(x,y);
-		locatieList *p = locList;
+		locationList *p = locList;
 		while(p->next != NULL){
  2ea:	9f 81       	ldd	r25, Y+7	; 0x07
  2ec:	00 97       	sbiw	r24, 0x00	; 0
@@ -635,7 +635,7 @@ void addLocation(int x, int y){
 			p = p->next;
 		}
 		
-		locatieList *newLoc = (locatieList *)malloc(sizeof(locatieList));
+		locationList *newLoc = (locationList *)malloc(sizeof(locationList));
  2f0:	88 e0       	ldi	r24, 0x08	; 8
  2f2:	90 e0       	ldi	r25, 0x00	; 0
  2f4:	17 d2       	rcall	.+1070   	; 0x724 <malloc>
@@ -678,7 +678,7 @@ void addLocation(int x, int y){
  32e:	89 2d       	mov	r24, r9
  330:	cb de       	rcall	.-618    	; 0xc8 <displaySetPixel>
  332:	e0 90 0c 01 	lds	r14, 0x010C	; 0x80010c <locList>
-		locatieList *p = locList;
+		locationList *p = locList;
  336:	f0 90 0d 01 	lds	r15, 0x010D	; 0x80010d <locList+0x1>
  33a:	f7 01       	movw	r30, r14
 		int min = p->number;
@@ -703,7 +703,7 @@ void addLocation(int x, int y){
 			}
 			c++;
  354:	a9 01       	movw	r20, r18
-		locatieList *p = locList;
+		locationList *p = locList;
 		int min = p->number;
 		int c = 0;
 		int position = 0;
@@ -712,7 +712,7 @@ void addLocation(int x, int y){
  356:	05 c0       	rjmp	.+10     	; 0x362 <addLocation+0xc2>
  358:	e7 01       	movw	r28, r14
 		displaySetPixel(x,y);
-		locatieList *p = locList;
+		locationList *p = locList;
 		int min = p->number;
 		int c = 0;
 		int position = 0;
@@ -733,7 +733,7 @@ void addLocation(int x, int y){
  368:	c0 2d       	mov	r28, r0
  36a:	20 97       	sbiw	r28, 0x00	; 0
 		displaySetPixel(x,y);
-		locatieList *p = locList;
+		locationList *p = locList;
 		int min = p->number;
 		int c = 0;
 		int position = 0;
@@ -743,8 +743,8 @@ void addLocation(int x, int y){
  370:	c8 16       	cp	r12, r24
 		p = locList;
 		c = 0;
-		locatieList *newLoc = (locatieList *)malloc(sizeof(locatieList));
-		locatieList *pervLoc = NULL; 
+		locationList *newLoc = (locationList *)malloc(sizeof(locationList));
+		locationList *pervLoc = NULL; 
 		while(p != NULL){
 			if(c == position){
  372:	d9 06       	cpc	r13, r25
@@ -755,8 +755,8 @@ void addLocation(int x, int y){
 		//writeLedDisplay(position);
 		p = locList;
 		c = 0;
-		locatieList *newLoc = (locatieList *)malloc(sizeof(locatieList));
-		locatieList *pervLoc = NULL; 
+		locationList *newLoc = (locationList *)malloc(sizeof(locationList));
+		locationList *pervLoc = NULL; 
  37a:	7e 01       	movw	r14, r28
 		while(p != NULL){
 			if(c == position){
@@ -825,8 +825,8 @@ void addLocation(int x, int y){
 		//writeLedDisplay(position);
 		p = locList;
 		c = 0;
-		locatieList *newLoc = (locatieList *)malloc(sizeof(locatieList));
-		locatieList *pervLoc = NULL; 
+		locationList *newLoc = (locationList *)malloc(sizeof(locationList));
+		locationList *pervLoc = NULL; 
 		while(p != NULL){
  3e0:	01 15       	cp	r16, r1
  3e2:	11 05       	cpc	r17, r1
@@ -837,13 +837,13 @@ void addLocation(int x, int y){
 		//writeLedDisplay(position);
 		p = locList;
 		c = 0;
-		locatieList *newLoc = (locatieList *)malloc(sizeof(locatieList));
+		locationList *newLoc = (locationList *)malloc(sizeof(locationList));
  3e8:	88 e0       	ldi	r24, 0x08	; 8
  3ea:	90 e0       	ldi	r25, 0x00	; 0
  3ec:	9b d1       	rcall	.+822    	; 0x724 <malloc>
  3ee:	5c 01       	movw	r10, r24
  3f0:	c1 14       	cp	r12, r1
-		locatieList *pervLoc = NULL; 
+		locationList *pervLoc = NULL; 
 		while(p != NULL){
 			if(c == position){
  3f2:	d1 04       	cpc	r13, r1

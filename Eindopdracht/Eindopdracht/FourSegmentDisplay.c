@@ -8,7 +8,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
-#include "fourSegmentDisplay.h"
+#include "headers/fourSegmentDisplay.h"
 
 
 #define BIT(x) ( 1<<x )
