@@ -32,12 +32,12 @@ int moveLeft(void);
 int moveRight(void);
 void setStartLocation(int x,int y);
 
-void increaceSize(void);
+void increaseSnakeSize(void);
 void addCandy(void);
 
 void drawCounting(int number);
 void displayDrawStart(void);
-void displayReset(void);
+void resetDisplay(void);
 
 
 

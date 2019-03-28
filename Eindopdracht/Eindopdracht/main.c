@@ -128,7 +128,7 @@ ISR( TIMER2_COMP_vect )
 			if(tick > 4000)
 			{
 				gStatus = COUNTING;
-				displayReset();
+				resetDisplay();
 				resetScore();
 				displayClr();
 				update();
