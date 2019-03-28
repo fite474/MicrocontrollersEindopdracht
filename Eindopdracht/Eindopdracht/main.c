@@ -65,35 +65,35 @@ int main(void)
 	//}
 	//wait(1000);
 	//}
-	moveDown();
+	moveSnakeDown();
 	wait(1000);
-	moveDown();
+	moveSnakeDown();
 	wait(1000);
-	moveDown();
+	moveSnakeDown();
 	wait(1000);
-	moveLeft();
+	moveSnakeLeft();
 	wait(1000);
-	moveLeft();
+	moveSnakeLeft();
 	wait(1000);
-	moveUp();
+	moveSnakeUp();
 	wait(1000);
-	increaceSize();
-	moveUp();
+	increaseSnakeSize();
+	moveSnakeUp();
 	wait(1000);
-	moveUp();
+	moveSnakeUp();
 	wait(1000);
-	increaceSize();
-	moveUp();
+	increaseSnakeSize();
+	moveSnakeUp();
 	wait(1000);
-	moveUp();
+	moveSnakeUp();
 	wait(1000);
-	moveUp();
+	moveSnakeUp();
 	wait(1000);
-	moveRight();
+	moveSnakeRight();
 	wait(1000);
-	moveRight();
+	moveSnakeRight();
 	wait(1000);
-	moveRight();
+	moveSnakeRight();
 	wait(1000);
 	
 	

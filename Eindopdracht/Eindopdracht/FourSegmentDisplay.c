@@ -98,7 +98,7 @@ void spi_writeWord(unsigned char adress, unsigned char data )
 	spi_slaveDeSelect(0);	// Deselect display chip
 }
 
-void writeLedDisplay(int value)
+void writeToLedDisplay(int value)
 {
 	clearDisplay();
 	if(value > 9999){
@@ -146,13 +146,13 @@ void clearDisplay(void)
 void calculateNewScoreAppleCollected()
 {
 	score += 20;
-	writeLedDisplay(score);
+	writeToLedDisplay(score);
 }
 
 void calculateNewScoreMovement()
 {
 	score += 2;
-	writeLedDisplay(score);
+	writeToLedDisplay(score);
 }
 
 

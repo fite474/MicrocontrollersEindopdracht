@@ -5,8 +5,15 @@
  *  Author: Diederich Kroeske
  */ 
 
-#include <avr/io.h>
+//defines
+										// I2C address of display
+#define D0_I2C_ADDR	((0x70 + 2) << 1)
+										// Display buffer in ATMEGA memory
+#define	width	8 * 1					// 1 displays width
+#define	height	8						// 1 display height
 
+//includes
+#include <avr/io.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,38 +21,27 @@
 #include "headers/display.h"
 #include "headers/fonts.h"
 
-// HT16K33 routines
-void displayInitHT16K33(uint8_t i2c_address);
-
-// I2C routines
-void twi_init(void);
-void twi_start(void);
-void twi_stop(void);
-void twi_tx(unsigned char data);
-
-// I2C address of display
-#define D0_I2C_ADDR	((0x70 + 2) << 1)
-
-// Display buffer in ATMEGA memory
-#define	width	8 * 1		// 1 displays width
-#define	height	8			// 1 display height
+//variables
 uint8_t buf[width*height/8];
-int maxSize = 4;
+int maxSnakeSize = 4;
 int counter = 0;
+
+//structs
 typedef struct{
 	int x;
 	int y;
-	}locatie;
+	}Locatie;
 
 typedef struct{
-	locatie loc;
+	Locatie location;
 	int number;
 	void* next;	
-	}locationList;
+	}LocationList;
 
-locationList *locList;
+LocationList *locationList;
+Locatie currentLocation;
 
-locatie currenLocation;
+
 /******************************************************************/
 void displayInit(void) 
 /*
@@ -58,15 +54,16 @@ Version :    	DMK, Initial code
 {
 	twi_init();							// Enable TWI interface
 	displayInitHT16K33(D0_I2C_ADDR);	// Iit display
-	locList = NULL;
+	locationList = NULL;
 }
 
-void startLoaction(void){
-	locatie loc;
-
+void startLoaction(void)
+{
+	Locatie location;
 }
 
-void drawImage(void){
+void drawImage(void)
+{
 	
 	buf[0]= 0b01111110;
 	buf[1]= 0b10011001;
@@ -149,13 +146,13 @@ Version :    	DMK, Initial code
 
 
 void setStartLocation(int x,int y){
-	currenLocation.x = x;
-	currenLocation.y = y;
+	currentLocation.x = x;
+	currentLocation.y = y;
 	
-	locList = (locationList *)malloc(sizeof(locationList));
-	locList->loc = currenLocation;
-	locList->number = counter;
-	locList->next = NULL;
+	locationList = (LocationList *)malloc(sizeof(LocationList));
+	locationList->location = currentLocation;
+	locationList->number = counter;
+	locationList->next = NULL;
 	counter++;
 	//(x,y);
 	displaySetPixel(x,y);
@@ -321,88 +318,98 @@ Version :    	DMK, Initial code
 	while( 0 == (TWCR & 0x80) );
 }
 
-int getLocationListSize(){
-	locationList *p = locList;
-	int size = 0;
-	while (p != NULL){
-		size++;
-		p = p->next;
+int getLocationListSize()
+{
+	LocationList *locationlist = locationList;
+	int locationListSize = 0;
+	while (locationlist != NULL)
+	{
+		locationListSize++;
+		locationlist = locationlist->next;
 	}
-	return size;
+	return locationListSize;
 }
 
-void increaceSize(){
-	maxSize++;
+void increaseSnakeSize()
+{
+	maxSnakeSize++;
 	calculateNewScoreAppleCollected();
 }
 
 
-void addLocation(int x, int y){
-	locatie loc;
-	loc.x = x;
-	loc.y = y;
+void moveToNewLocation(int x, int y)
+{
+	Locatie location;
+	location.x = x;
+	location.y = y;
 	calculateNewScoreMovement();
 	// add sound
 	int size = getLocationListSize();
-	if(size < maxSize){
+	if(size < maxSnakeSize)
+	{
 		displaySetPixel(x,y);
-		locationList *p = locList;
-		while(p->next != NULL){
-			p = p->next;
-		}
+		LocationList *locationlist = locationList;
+		while(locationlist->next != NULL){
+		locationlist = locationlist->next;
+	}
 		
-		locationList *newLoc = (locationList *)malloc(sizeof(locationList));
-		newLoc->loc = loc;
-		newLoc->number = counter;
+		LocationList *newLocation = (LocationList *)malloc(sizeof(LocationList));
+		newLocation->location = location;
+		newLocation->number = counter;
 		//writeLedDisplay(counter);
-		newLoc->next = NULL;
-		p->next = newLoc;
+		newLocation->next = NULL;
+		locationlist->next = newLocation;
 		
 		counter++;
-		currenLocation.x = x;
-		currenLocation.y = y;
-	}else{
+		currentLocation.x = x;
+		currentLocation.y = y;
+	}else
+	{
 		//writeLedDisplay(2);
 		displaySetPixel(x,y);
-		locationList *p = locList;
-		int min = p->number;
+		LocationList *locationlist = locationList;
+		int min = locationlist->number;
 		int c = 0;
 		int position = 0;
-		while(p != NULL){
-			if(p->number < min){
-				min = p->number;
+		while(locationlist != NULL){
+			if(locationlist->number < min)
+			{
+				min = locationlist->number;
 				position = c;
 			}
 			c++;
-			p = p->next;
+			locationlist = locationlist->next;
 		}
 		
 		
 		//writeLedDisplay(position);
-		p = locList;
+		locationlist = locationList;
 		c = 0;
-		locationList *newLoc = (locationList *)malloc(sizeof(locationList));
-		locationList *pervLoc = NULL; 
-		while(p != NULL){
-			if(c == position){
-				displayClrPixel(p->loc.x,p->loc.y);
+		LocationList *newLocation = (LocationList *)malloc(sizeof(LocationList));
+		LocationList *previousLocation = NULL; 
+		while(locationlist != NULL){
+			if(c == position)
+			{
+				displayClrPixel(locationlist->location.x,locationlist->location.y);
 			//	writeLedDisplay(p->number);
-				newLoc->loc = loc;
-				newLoc->number = counter;
-				newLoc->next = p->next;
+				newLocation->location = location;
+				newLocation->number = counter;
+				newLocation->next = locationlist->next;
 				counter++;
-				free(p);
-				if(position == 0){
-					locList = newLoc;	
-				}else{
-					pervLoc->next = newLoc;
+				free(locationlist);
+				if(position == 0)
+				{
+					locationList = newLocation;	
+				}else
+				{
+					previousLocation->next = newLocation;
 				}
-				currenLocation.x = x;
-				currenLocation.y = y;
+				currentLocation.x = x;
+				currentLocation.y = y;
 				break;
 			}
-			pervLoc = p;
-			p = p->next;
+			previousLocation = locationlist;
+			locationlist = locationlist->next;
 			c++;
 		}
 	}
@@ -436,40 +443,40 @@ void addLocation(int x, int y){
 	
 
 
-void moveUp(){
+void moveSnakeUp(){
 	
-	int x = currenLocation.x;
-	int y = currenLocation.y;
+	int x = currentLocation.x;
+	int y = currentLocation.y;
 	
 	x--;
-	addLocation(x,y);
+	moveToNewLocation(x,y);
 	update();
 	
 }
-void moveDown(){
-	int x = currenLocation.x;
-	int y = currenLocation.y;
+void moveSnakeDown(){
+	int x = currentLocation.x;
+	int y = currentLocation.y;
 	
 	x++;
-	addLocation(x,y);
+	moveToNewLocation(x,y);
 	update();
 }
 
-void moveLeft(){
-	int x = currenLocation.x;
-	int y = currenLocation.y;
+void moveSnakeLeft(){
+	int x = currentLocation.x;
+	int y = currentLocation.y;
 
 	y++;
-	addLocation(x,y);
+	moveToNewLocation(x,y);
 	update();
 }
 
-void moveRight(){
-	int x = currenLocation.x;
-	int y = currenLocation.y;
+void moveSnakeRight(){
+	int x = currentLocation.x;
+	int y = currentLocation.y;
 	
 	y--;
-	addLocation(x,y);
+	moveToNewLocation(x,y);
 	update();
 	
 }

@@ -17,7 +17,7 @@ void displayDriverInit(void);
 void displayOn(void);
 void displayOff(void);
 void spi_writeWord(unsigned char adress, unsigned char data);
-void writeLedDisplay(int value);
+void writeToLedDisplay(int value);
 void clearDisplay(void);
 void calculateNewScoreAppleCollected(void);
 void calculateNewScoreMovement(void);
