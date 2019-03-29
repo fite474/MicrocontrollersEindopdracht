@@ -147,6 +147,9 @@
     <Compile Include="fourSegmentDisplay.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="game.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="headers\buttons.h">
       <SubType>compile</SubType>
     </Compile>
@@ -157,6 +160,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="headers\fourSegmentDisplay.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="headers\game.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="headers\sound.h">

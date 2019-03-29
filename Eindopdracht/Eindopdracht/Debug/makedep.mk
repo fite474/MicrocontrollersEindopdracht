@@ -8,6 +8,8 @@ display.c
 
 fourSegmentDisplay.c
 
+game.c
+
 main.c
 
 sound.c

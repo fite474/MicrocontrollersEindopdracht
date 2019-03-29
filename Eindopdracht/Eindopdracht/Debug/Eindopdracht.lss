@@ -13,21 +13,21 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  0000103c  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000200  00000000  00000000  0000107c  2**0
+  5 .debug_aranges 00000230  00000000  00000000  0000107c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00002083  00000000  00000000  0000127c  2**0
+  6 .debug_info   00002167  00000000  00000000  000012ac  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000e23  00000000  00000000  000032ff  2**0
+  7 .debug_abbrev 00000eaa  00000000  00000000  00003413  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00001308  00000000  00000000  00004122  2**0
+  8 .debug_line   000013a5  00000000  00000000  000042bd  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000458  00000000  00000000  0000542c  2**2
+  9 .debug_frame  0000049c  00000000  00000000  00005664  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000893  00000000  00000000  00005884  2**0
+ 10 .debug_str    000008b9  00000000  00000000  00005b00  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000ebd  00000000  00000000  00006117  2**0
+ 11 .debug_loc    00000ebd  00000000  00000000  000063b9  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000001c0  00000000  00000000  00006fd4  2**0
+ 12 .debug_ranges 000001e0  00000000  00000000  00007276  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -51,7 +51,7 @@ Disassembly of section .text:
   1e:	00 00       	nop
   20:	52 c0       	rjmp	.+164    	; 0xc6 <__bad_interrupt>
   22:	00 00       	nop
-  24:	7b c4       	rjmp	.+2294   	; 0x91c <__vector_9>
+  24:	32 c5       	rjmp	.+2660   	; 0xa8a <__vector_9>
   26:	00 00       	nop
   28:	4e c0       	rjmp	.+156    	; 0xc6 <__bad_interrupt>
   2a:	00 00       	nop
@@ -140,7 +140,7 @@ Disassembly of section .text:
   bc:	a5 33       	cpi	r26, 0x35	; 53
   be:	b2 07       	cpc	r27, r18
   c0:	e1 f7       	brne	.-8      	; 0xba <.do_clear_bss_loop>
-  c2:	07 d5       	rcall	.+2574   	; 0xad2 <main>
+  c2:	0a d5       	rcall	.+2580   	; 0xad8 <main>
   c4:	50 c7       	rjmp	.+3744   	; 0xf66 <_exit>
 
 000000c6 <__bad_interrupt>:
@@ -1248,11 +1248,11 @@ int moveToNewLocation(int x, int y)
  628:	99 06       	cpc	r9, r25
  62a:	91 f5       	brne	.+100    	; 0x690 <moveToNewLocation+0x16c>
  62c:	02 c0       	rjmp	.+4      	; 0x632 <moveToNewLocation+0x10e>
+			}
+			locationCounter++;
 			locationlist = locationlist->next;
 		}
 		
-		
-		//writeLedDisplay(position);
 		locationlist = locationList;
  62e:	87 01       	movw	r16, r14
 		locationCounter = 0;
@@ -1337,7 +1337,7 @@ int moveToNewLocation(int x, int y)
  696:	17 81       	ldd	r17, Z+7	; 0x07
 			locationCounter++;
  698:	01 96       	adiw	r24, 0x01	; 1
-		//writeLedDisplay(position);
+		
 		locationlist = locationList;
 		locationCounter = 0;
 		LocationList *newLocation = (LocationList *)malloc(sizeof(LocationList));
@@ -1364,9 +1364,9 @@ int moveToNewLocation(int x, int y)
  6a8:	80 e0       	ldi	r24, 0x00	; 0
  6aa:	90 e0       	ldi	r25, 0x00	; 0
  6ac:	0b c0       	rjmp	.+22     	; 0x6c4 <moveToNewLocation+0x1a0>
+			locationlist = locationlist->next;
+		}
 		
-		
-		//writeLedDisplay(position);
 		locationlist = locationList;
 		locationCounter = 0;
 		LocationList *newLocation = (LocationList *)malloc(sizeof(LocationList));
@@ -1408,9 +1408,7 @@ int moveToNewLocation(int x, int y)
 
 000006e2 <moveSnakeUp>:
  6e2:	ef e1       	ldi	r30, 0x1F	; 31
-	
-
-
+		
 int moveSnakeUp(){
 	
 	int x = currentLocation.x;
@@ -1866,215 +1864,361 @@ void calculateNewScoreMovement()
 {
  91a:	08 95       	ret
 
-0000091c <__vector_9>:
-{
-	while (WAITING == checkDirection())
+0000091c <gameOver>:
+int check = 1;
+
+
+void gameOver(){
+	
+	if(1 == tick)
+ 91c:	80 91 13 01 	lds	r24, 0x0113	; 0x800113 <tick>
+ 920:	90 91 14 01 	lds	r25, 0x0114	; 0x800114 <tick+0x1>
+ 924:	81 30       	cpi	r24, 0x01	; 1
+ 926:	91 05       	cpc	r25, r1
+ 928:	21 f4       	brne	.+8      	; 0x932 <gameOver+0x16>
 	{
-		
+		drawImage();
+ 92a:	25 dc       	rcall	.-1974   	; 0x176 <drawImage>
+		update();
+ 92c:	1c dd       	rcall	.-1480   	; 0x366 <update>
+		beepGameOver();
+ 92e:	f7 c0       	rjmp	.+494    	; 0xb1e <beepGameOver>
+ 930:	08 95       	ret
+ 932:	81 3a       	cpi	r24, 0xA1	; 161
+	}else
+	if(tick > 4000)
+ 934:	9f 40       	sbci	r25, 0x0F	; 15
+ 936:	7c f0       	brlt	.+30     	; 0x956 <gameOver+0x3a>
+	{
+		gStatus = COUNTING;
+ 938:	10 92 16 01 	sts	0x0116, r1	; 0x800116 <gStatus>
+		resetDisplay();
+		resetScore();
+ 93c:	cf dd       	rcall	.-1122   	; 0x4dc <resetDisplay>
+ 93e:	e5 df       	rcall	.-54     	; 0x90a <resetScore>
+		displayClr();
+ 940:	a2 dc       	rcall	.-1724   	; 0x286 <displayClr>
+		update();
+ 942:	11 dd       	rcall	.-1502   	; 0x366 <update>
+ 944:	64 e0       	ldi	r22, 0x04	; 4
+		setStartLocation(4,4);
+ 946:	70 e0       	ldi	r23, 0x00	; 0
+ 948:	84 e0       	ldi	r24, 0x04	; 4
+ 94a:	90 e0       	ldi	r25, 0x00	; 0
+ 94c:	64 dc       	rcall	.-1848   	; 0x216 <setStartLocation>
+ 94e:	10 92 14 01 	sts	0x0114, r1	; 0x800114 <tick+0x1>
+		tick = 0;
+ 952:	10 92 13 01 	sts	0x0113, r1	; 0x800113 <tick>
+ 956:	08 95       	ret
+
+00000958 <playing>:
+ 958:	80 91 0c 01 	lds	r24, 0x010C	; 0x80010c <check>
 	}
+	
 }
- 91c:	1f 92       	push	r1
- 91e:	0f 92       	push	r0
- 920:	0f b6       	in	r0, 0x3f	; 63
- 922:	0f 92       	push	r0
- 924:	11 24       	eor	r1, r1
- 926:	0b b6       	in	r0, 0x3b	; 59
- 928:	0f 92       	push	r0
- 92a:	2f 93       	push	r18
- 92c:	3f 93       	push	r19
- 92e:	4f 93       	push	r20
- 930:	5f 93       	push	r21
- 932:	6f 93       	push	r22
- 934:	7f 93       	push	r23
- 936:	8f 93       	push	r24
- 938:	9f 93       	push	r25
- 93a:	af 93       	push	r26
- 93c:	bf 93       	push	r27
- 93e:	ef 93       	push	r30
- 940:	ff 93       	push	r31
- 942:	80 91 16 01 	lds	r24, 0x0116	; 0x800116 <gStatus>
- 946:	81 30       	cpi	r24, 0x01	; 1
- 948:	31 f0       	breq	.+12     	; 0x956 <__vector_9+0x3a>
- 94a:	08 f4       	brcc	.+2      	; 0x94e <__vector_9+0x32>
- 94c:	4d c0       	rjmp	.+154    	; 0x9e8 <__vector_9+0xcc>
- 94e:	82 30       	cpi	r24, 0x02	; 2
- 950:	09 f4       	brne	.+2      	; 0x954 <__vector_9+0x38>
- 952:	85 c0       	rjmp	.+266    	; 0xa5e <__vector_9+0x142>
- 954:	a2 c0       	rjmp	.+324    	; 0xa9a <__vector_9+0x17e>
- 956:	80 91 0c 01 	lds	r24, 0x010C	; 0x80010c <check>
- 95a:	90 91 0d 01 	lds	r25, 0x010D	; 0x80010d <check+0x1>
- 95e:	89 2b       	or	r24, r25
- 960:	59 f0       	breq	.+22     	; 0x978 <__vector_9+0x5c>
- 962:	c5 db       	rcall	.-2166   	; 0xee <checkDirection>
- 964:	90 91 15 01 	lds	r25, 0x0115	; 0x800115 <status>
- 968:	89 17       	cp	r24, r25
- 96a:	31 f0       	breq	.+12     	; 0x978 <__vector_9+0x5c>
- 96c:	10 92 0d 01 	sts	0x010D, r1	; 0x80010d <check+0x1>
- 970:	10 92 0c 01 	sts	0x010C, r1	; 0x80010c <check>
- 974:	80 93 15 01 	sts	0x0115, r24	; 0x800115 <status>
- 978:	80 91 13 01 	lds	r24, 0x0113	; 0x800113 <tick>
- 97c:	90 91 14 01 	lds	r25, 0x0114	; 0x800114 <tick+0x1>
- 980:	88 3c       	cpi	r24, 0xC8	; 200
- 982:	91 05       	cpc	r25, r1
- 984:	09 f0       	breq	.+2      	; 0x988 <__vector_9+0x6c>
- 986:	89 c0       	rjmp	.+274    	; 0xa9a <__vector_9+0x17e>
+
+void playing(){
+	if(check)
+ 95c:	90 91 0d 01 	lds	r25, 0x010D	; 0x80010d <check+0x1>
+ 960:	89 2b       	or	r24, r25
+ 962:	59 f0       	breq	.+22     	; 0x97a <playing+0x22>
+	{
+		enum eStatus newStatus = checkDirection();
+ 964:	c4 db       	rcall	.-2168   	; 0xee <checkDirection>
+		if(status != newStatus)
+ 966:	90 91 15 01 	lds	r25, 0x0115	; 0x800115 <status>
+ 96a:	89 17       	cp	r24, r25
+ 96c:	31 f0       	breq	.+12     	; 0x97a <playing+0x22>
+		{
+			check = 0;
+ 96e:	10 92 0d 01 	sts	0x010D, r1	; 0x80010d <check+0x1>
+ 972:	10 92 0c 01 	sts	0x010C, r1	; 0x80010c <check>
+			status = newStatus;
+ 976:	80 93 15 01 	sts	0x0115, r24	; 0x800115 <status>
+		}
+	}
+	if (tick == 200)
+ 97a:	80 91 13 01 	lds	r24, 0x0113	; 0x800113 <tick>
+ 97e:	90 91 14 01 	lds	r25, 0x0114	; 0x800114 <tick+0x1>
+ 982:	88 3c       	cpi	r24, 0xC8	; 200
+ 984:	91 05       	cpc	r25, r1
+ 986:	79 f5       	brne	.+94     	; 0x9e6 <playing+0x8e>
+	{
+		tick = 0;
  988:	10 92 14 01 	sts	0x0114, r1	; 0x800114 <tick+0x1>
  98c:	10 92 13 01 	sts	0x0113, r1	; 0x800113 <tick>
+		switch (status)
  990:	80 91 15 01 	lds	r24, 0x0115	; 0x800115 <status>
  994:	81 30       	cpi	r24, 0x01	; 1
- 996:	69 f0       	breq	.+26     	; 0x9b2 <__vector_9+0x96>
- 998:	28 f0       	brcs	.+10     	; 0x9a4 <__vector_9+0x88>
+ 996:	69 f0       	breq	.+26     	; 0x9b2 <playing+0x5a>
+ 998:	28 f0       	brcs	.+10     	; 0x9a4 <playing+0x4c>
  99a:	82 30       	cpi	r24, 0x02	; 2
- 99c:	89 f0       	breq	.+34     	; 0x9c0 <__vector_9+0xa4>
+ 99c:	89 f0       	breq	.+34     	; 0x9c0 <playing+0x68>
  99e:	83 30       	cpi	r24, 0x03	; 3
- 9a0:	b1 f0       	breq	.+44     	; 0x9ce <__vector_9+0xb2>
- 9a2:	1b c0       	rjmp	.+54     	; 0x9da <__vector_9+0xbe>
+ 9a0:	b1 f0       	breq	.+44     	; 0x9ce <playing+0x76>
+		{
+			case GOING_UP:
+			if(!moveSnakeUp())
+ 9a2:	1b c0       	rjmp	.+54     	; 0x9da <playing+0x82>
  9a4:	9e de       	rcall	.-708    	; 0x6e2 <moveSnakeUp>
  9a6:	89 2b       	or	r24, r25
- 9a8:	c1 f4       	brne	.+48     	; 0x9da <__vector_9+0xbe>
+ 9a8:	c1 f4       	brne	.+48     	; 0x9da <playing+0x82>
+			{
+				gStatus = GAMEOVER;
  9aa:	82 e0       	ldi	r24, 0x02	; 2
  9ac:	80 93 16 01 	sts	0x0116, r24	; 0x800116 <gStatus>
- 9b0:	14 c0       	rjmp	.+40     	; 0x9da <__vector_9+0xbe>
+			}
+			break;
+			
+			
+			case GOING_DOWN :
+			if(!moveSnakeDown())
+ 9b0:	14 c0       	rjmp	.+40     	; 0x9da <playing+0x82>
  9b2:	a8 de       	rcall	.-688    	; 0x704 <moveSnakeDown>
  9b4:	89 2b       	or	r24, r25
- 9b6:	89 f4       	brne	.+34     	; 0x9da <__vector_9+0xbe>
+ 9b6:	89 f4       	brne	.+34     	; 0x9da <playing+0x82>
+			{
+				gStatus = GAMEOVER;
  9b8:	82 e0       	ldi	r24, 0x02	; 2
  9ba:	80 93 16 01 	sts	0x0116, r24	; 0x800116 <gStatus>
- 9be:	0d c0       	rjmp	.+26     	; 0x9da <__vector_9+0xbe>
+			}
+			break;
+			
+			
+			case GOING_LEFT:
+			if(!moveSnakeLeft())
+ 9be:	0d c0       	rjmp	.+26     	; 0x9da <playing+0x82>
  9c0:	b4 de       	rcall	.-664    	; 0x72a <moveSnakeLeft>
  9c2:	89 2b       	or	r24, r25
- 9c4:	51 f4       	brne	.+20     	; 0x9da <__vector_9+0xbe>
+ 9c4:	51 f4       	brne	.+20     	; 0x9da <playing+0x82>
+			{
+				gStatus = GAMEOVER;
  9c6:	82 e0       	ldi	r24, 0x02	; 2
  9c8:	80 93 16 01 	sts	0x0116, r24	; 0x800116 <gStatus>
- 9cc:	06 c0       	rjmp	.+12     	; 0x9da <__vector_9+0xbe>
+			}
+			break;
+			
+			
+			case GOING_RIGHT:
+			if(!moveSnakeRight())
+ 9cc:	06 c0       	rjmp	.+12     	; 0x9da <playing+0x82>
  9ce:	c1 de       	rcall	.-638    	; 0x752 <moveSnakeRight>
  9d0:	89 2b       	or	r24, r25
- 9d2:	19 f4       	brne	.+6      	; 0x9da <__vector_9+0xbe>
+ 9d2:	19 f4       	brne	.+6      	; 0x9da <playing+0x82>
+			{
+				gStatus = GAMEOVER;
  9d4:	82 e0       	ldi	r24, 0x02	; 2
  9d6:	80 93 16 01 	sts	0x0116, r24	; 0x800116 <gStatus>
+			
+			
+			case WAITING:
+			break;
+		}
+		check = 1;
  9da:	81 e0       	ldi	r24, 0x01	; 1
  9dc:	90 e0       	ldi	r25, 0x00	; 0
  9de:	90 93 0d 01 	sts	0x010D, r25	; 0x80010d <check+0x1>
  9e2:	80 93 0c 01 	sts	0x010C, r24	; 0x80010c <check>
- 9e6:	59 c0       	rjmp	.+178    	; 0xa9a <__vector_9+0x17e>
+ 9e6:	08 95       	ret
+
+000009e8 <counting>:
+	}
+}
+
+void counting(){
+	if(tick == 700)
  9e8:	80 91 13 01 	lds	r24, 0x0113	; 0x800113 <tick>
  9ec:	90 91 14 01 	lds	r25, 0x0114	; 0x800114 <tick+0x1>
  9f0:	8c 3b       	cpi	r24, 0xBC	; 188
  9f2:	22 e0       	ldi	r18, 0x02	; 2
  9f4:	92 07       	cpc	r25, r18
- 9f6:	39 f4       	brne	.+14     	; 0xa06 <__vector_9+0xea>
+ 9f6:	39 f4       	brne	.+14     	; 0xa06 <counting+0x1e>
+	{
+		beepOn();
  9f8:	8d d0       	rcall	.+282    	; 0xb14 <beepOn>
+		drawCounting(3);
  9fa:	83 e0       	ldi	r24, 0x03	; 3
  9fc:	90 e0       	ldi	r25, 0x00	; 0
+		update();
  9fe:	c9 db       	rcall	.-2158   	; 0x192 <drawCounting>
  a00:	b2 dc       	rcall	.-1692   	; 0x366 <update>
- a02:	8b d0       	rcall	.+278    	; 0xb1a <beepOff>
- a04:	4a c0       	rjmp	.+148    	; 0xa9a <__vector_9+0x17e>
+		beepOff();
+ a02:	8b c0       	rjmp	.+278    	; 0xb1a <beepOff>
+ a04:	08 95       	ret
  a06:	88 37       	cpi	r24, 0x78	; 120
+	}else
+	if(tick == 1400)
  a08:	25 e0       	ldi	r18, 0x05	; 5
  a0a:	92 07       	cpc	r25, r18
- a0c:	39 f4       	brne	.+14     	; 0xa1c <__vector_9+0x100>
+ a0c:	39 f4       	brne	.+14     	; 0xa1c <counting+0x34>
+	{
+		beepOn();
  a0e:	82 d0       	rcall	.+260    	; 0xb14 <beepOn>
+		drawCounting(2);
  a10:	82 e0       	ldi	r24, 0x02	; 2
  a12:	90 e0       	ldi	r25, 0x00	; 0
  a14:	be db       	rcall	.-2180   	; 0x192 <drawCounting>
  a16:	a7 dc       	rcall	.-1714   	; 0x366 <update>
- a18:	80 d0       	rcall	.+256    	; 0xb1a <beepOff>
- a1a:	3f c0       	rjmp	.+126    	; 0xa9a <__vector_9+0x17e>
+		update();
+ a18:	80 c0       	rjmp	.+256    	; 0xb1a <beepOff>
+		beepOff();
+ a1a:	08 95       	ret
  a1c:	84 33       	cpi	r24, 0x34	; 52
+	}else
+	if(tick == 2100)
  a1e:	28 e0       	ldi	r18, 0x08	; 8
  a20:	92 07       	cpc	r25, r18
- a22:	39 f4       	brne	.+14     	; 0xa32 <__vector_9+0x116>
+	{
+		beepOn();
+ a22:	39 f4       	brne	.+14     	; 0xa32 <counting+0x4a>
  a24:	77 d0       	rcall	.+238    	; 0xb14 <beepOn>
+		drawCounting(1);
  a26:	81 e0       	ldi	r24, 0x01	; 1
  a28:	90 e0       	ldi	r25, 0x00	; 0
+		update();
  a2a:	b3 db       	rcall	.-2202   	; 0x192 <drawCounting>
+		beepOff();
  a2c:	9c dc       	rcall	.-1736   	; 0x366 <update>
- a2e:	75 d0       	rcall	.+234    	; 0xb1a <beepOff>
- a30:	34 c0       	rjmp	.+104    	; 0xa9a <__vector_9+0x17e>
+ a2e:	75 c0       	rjmp	.+234    	; 0xb1a <beepOff>
+ a30:	08 95       	ret
+	}else
+	if (tick == 2800)
  a32:	80 3f       	cpi	r24, 0xF0	; 240
  a34:	9a 40       	sbci	r25, 0x0A	; 10
- a36:	09 f0       	breq	.+2      	; 0xa3a <__vector_9+0x11e>
- a38:	30 c0       	rjmp	.+96     	; 0xa9a <__vector_9+0x17e>
- a3a:	6c d0       	rcall	.+216    	; 0xb14 <beepOn>
- a3c:	24 dc       	rcall	.-1976   	; 0x286 <displayClr>
- a3e:	b2 dc       	rcall	.-1692   	; 0x3a4 <displayDrawStart>
- a40:	d6 dc       	rcall	.-1620   	; 0x3ee <addCandy>
- a42:	91 dc       	rcall	.-1758   	; 0x366 <update>
- a44:	6a d0       	rcall	.+212    	; 0xb1a <beepOff>
- a46:	81 e0       	ldi	r24, 0x01	; 1
- a48:	80 93 16 01 	sts	0x0116, r24	; 0x800116 <gStatus>
- a4c:	10 92 0d 01 	sts	0x010D, r1	; 0x80010d <check+0x1>
- a50:	10 92 0c 01 	sts	0x010C, r1	; 0x80010c <check>
- a54:	10 92 14 01 	sts	0x0114, r1	; 0x800114 <tick+0x1>
- a58:	10 92 13 01 	sts	0x0113, r1	; 0x800113 <tick>
- a5c:	1e c0       	rjmp	.+60     	; 0xa9a <__vector_9+0x17e>
- a5e:	80 91 13 01 	lds	r24, 0x0113	; 0x800113 <tick>
- a62:	90 91 14 01 	lds	r25, 0x0114	; 0x800114 <tick+0x1>
- a66:	81 30       	cpi	r24, 0x01	; 1
- a68:	91 05       	cpc	r25, r1
- a6a:	29 f4       	brne	.+10     	; 0xa76 <__vector_9+0x15a>
- a6c:	58 d0       	rcall	.+176    	; 0xb1e <beepGameOver>
- a6e:	83 db       	rcall	.-2298   	; 0x176 <drawImage>
- a70:	7a dc       	rcall	.-1804   	; 0x366 <update>
- a72:	55 d0       	rcall	.+170    	; 0xb1e <beepGameOver>
- a74:	12 c0       	rjmp	.+36     	; 0xa9a <__vector_9+0x17e>
- a76:	81 3a       	cpi	r24, 0xA1	; 161
- a78:	9f 40       	sbci	r25, 0x0F	; 15
- a7a:	7c f0       	brlt	.+30     	; 0xa9a <__vector_9+0x17e>
- a7c:	10 92 16 01 	sts	0x0116, r1	; 0x800116 <gStatus>
- a80:	2d dd       	rcall	.-1446   	; 0x4dc <resetDisplay>
- a82:	43 df       	rcall	.-378    	; 0x90a <resetScore>
- a84:	00 dc       	rcall	.-2048   	; 0x286 <displayClr>
- a86:	6f dc       	rcall	.-1826   	; 0x366 <update>
- a88:	64 e0       	ldi	r22, 0x04	; 4
- a8a:	70 e0       	ldi	r23, 0x00	; 0
- a8c:	84 e0       	ldi	r24, 0x04	; 4
- a8e:	90 e0       	ldi	r25, 0x00	; 0
- a90:	c2 db       	rcall	.-2172   	; 0x216 <setStartLocation>
- a92:	10 92 14 01 	sts	0x0114, r1	; 0x800114 <tick+0x1>
- a96:	10 92 13 01 	sts	0x0113, r1	; 0x800113 <tick>
- a9a:	80 91 13 01 	lds	r24, 0x0113	; 0x800113 <tick>
- a9e:	90 91 14 01 	lds	r25, 0x0114	; 0x800114 <tick+0x1>
- aa2:	01 96       	adiw	r24, 0x01	; 1
- aa4:	90 93 14 01 	sts	0x0114, r25	; 0x800114 <tick+0x1>
- aa8:	80 93 13 01 	sts	0x0113, r24	; 0x800113 <tick>
- aac:	ff 91       	pop	r31
- aae:	ef 91       	pop	r30
- ab0:	bf 91       	pop	r27
- ab2:	af 91       	pop	r26
- ab4:	9f 91       	pop	r25
- ab6:	8f 91       	pop	r24
- ab8:	7f 91       	pop	r23
- aba:	6f 91       	pop	r22
- abc:	5f 91       	pop	r21
- abe:	4f 91       	pop	r20
- ac0:	3f 91       	pop	r19
- ac2:	2f 91       	pop	r18
- ac4:	0f 90       	pop	r0
- ac6:	0b be       	out	0x3b, r0	; 59
- ac8:	0f 90       	pop	r0
- aca:	0f be       	out	0x3f, r0	; 63
- acc:	0f 90       	pop	r0
- ace:	1f 90       	pop	r1
- ad0:	18 95       	reti
+ a36:	89 f4       	brne	.+34     	; 0xa5a <counting+0x72>
+	{
+		beepOn();
+ a38:	6d d0       	rcall	.+218    	; 0xb14 <beepOn>
+ a3a:	25 dc       	rcall	.-1974   	; 0x286 <displayClr>
+		displayClr();
+ a3c:	b3 dc       	rcall	.-1690   	; 0x3a4 <displayDrawStart>
+ a3e:	d7 dc       	rcall	.-1618   	; 0x3ee <addCandy>
+		displayDrawStart();
+ a40:	92 dc       	rcall	.-1756   	; 0x366 <update>
+ a42:	6b d0       	rcall	.+214    	; 0xb1a <beepOff>
+		addCandy();
+ a44:	81 e0       	ldi	r24, 0x01	; 1
+ a46:	80 93 16 01 	sts	0x0116, r24	; 0x800116 <gStatus>
+		update();
+ a4a:	10 92 0d 01 	sts	0x010D, r1	; 0x80010d <check+0x1>
+		beepOff();
+ a4e:	10 92 0c 01 	sts	0x010C, r1	; 0x80010c <check>
+		gStatus = PLAYING;
+ a52:	10 92 14 01 	sts	0x0114, r1	; 0x800114 <tick+0x1>
+		check = 0;
+ a56:	10 92 13 01 	sts	0x0113, r1	; 0x800113 <tick>
+ a5a:	08 95       	ret
 
-00000ad2 <main>:
+00000a5c <startGame>:
+ a5c:	80 91 16 01 	lds	r24, 0x0116	; 0x800116 <gStatus>
+		tick = 0;
+ a60:	81 30       	cpi	r24, 0x01	; 1
+ a62:	21 f0       	breq	.+8      	; 0xa6c <startGame+0x10>
+ a64:	28 f0       	brcs	.+10     	; 0xa70 <startGame+0x14>
+ a66:	82 30       	cpi	r24, 0x02	; 2
+}
+
+
+void startGame()
+{
+	switch(gStatus)
+ a68:	29 f0       	breq	.+10     	; 0xa74 <startGame+0x18>
+ a6a:	05 c0       	rjmp	.+10     	; 0xa76 <startGame+0x1a>
+	{
+		case PLAYING :
+		{
+			playing();
+ a6c:	75 df       	rcall	.-278    	; 0x958 <playing>
+		}
+		
+		
+		case COUNTING :
+		{
+			counting();
+ a6e:	03 c0       	rjmp	.+6      	; 0xa76 <startGame+0x1a>
+			break;
+ a70:	bb df       	rcall	.-138    	; 0x9e8 <counting>
+		}
+		
+		
+		case GAMEOVER :
+		{
+			gameOver();
+ a72:	01 c0       	rjmp	.+2      	; 0xa76 <startGame+0x1a>
+ a74:	53 df       	rcall	.-346    	; 0x91c <gameOver>
+			break;
+		}
+	}
+	tick++;
+ a76:	80 91 13 01 	lds	r24, 0x0113	; 0x800113 <tick>
+ a7a:	90 91 14 01 	lds	r25, 0x0114	; 0x800114 <tick+0x1>
+ a7e:	01 96       	adiw	r24, 0x01	; 1
+ a80:	90 93 14 01 	sts	0x0114, r25	; 0x800114 <tick+0x1>
+ a84:	80 93 13 01 	sts	0x0113, r24	; 0x800113 <tick>
+ a88:	08 95       	ret
+
+00000a8a <__vector_9>:
+#include "headers/buttons.h"
+#include "headers/sound.h"
+#include "headers/game.h"
+
+ISR( TIMER2_COMP_vect )
+{
+ a8a:	1f 92       	push	r1
+ a8c:	0f 92       	push	r0
+ a8e:	0f b6       	in	r0, 0x3f	; 63
+ a90:	0f 92       	push	r0
+ a92:	11 24       	eor	r1, r1
+ a94:	0b b6       	in	r0, 0x3b	; 59
+ a96:	0f 92       	push	r0
+ a98:	2f 93       	push	r18
+ a9a:	3f 93       	push	r19
+ a9c:	4f 93       	push	r20
+ a9e:	5f 93       	push	r21
+ aa0:	6f 93       	push	r22
+ aa2:	7f 93       	push	r23
+ aa4:	8f 93       	push	r24
+ aa6:	9f 93       	push	r25
+ aa8:	af 93       	push	r26
+ aaa:	bf 93       	push	r27
+ aac:	ef 93       	push	r30
+ aae:	ff 93       	push	r31
+	startGame();
+ ab0:	d5 df       	rcall	.-86     	; 0xa5c <startGame>
+}
+ ab2:	ff 91       	pop	r31
+ ab4:	ef 91       	pop	r30
+ ab6:	bf 91       	pop	r27
+ ab8:	af 91       	pop	r26
+ aba:	9f 91       	pop	r25
+ abc:	8f 91       	pop	r24
+ abe:	7f 91       	pop	r23
+ ac0:	6f 91       	pop	r22
+ ac2:	5f 91       	pop	r21
+ ac4:	4f 91       	pop	r20
+ ac6:	3f 91       	pop	r19
+ ac8:	2f 91       	pop	r18
+ aca:	0f 90       	pop	r0
+ acc:	0b be       	out	0x3b, r0	; 59
+ ace:	0f 90       	pop	r0
+ ad0:	0f be       	out	0x3f, r0	; 63
+ ad2:	0f 90       	pop	r0
+ ad4:	1f 90       	pop	r1
+ ad6:	18 95       	reti
+
+00000ad8 <main>:
 
 
 int main(void)
 {
 								//initializatie voor het scoreBord
 	DDRB=0x01;					// Set PB0 pin as output for display select
- ad2:	81 e0       	ldi	r24, 0x01	; 1
- ad4:	87 bb       	out	0x17, r24	; 23
+ ad8:	81 e0       	ldi	r24, 0x01	; 1
+ ada:	87 bb       	out	0x17, r24	; 23
 	spi_masterInit();			// Initialize spi module
- ad6:	4f de       	rcall	.-866    	; 0x776 <spi_masterInit>
+ adc:	4c de       	rcall	.-872    	; 0x776 <spi_masterInit>
 	displayDriverInit();		// Initialize display chip
- ad8:	70 de       	rcall	.-800    	; 0x7ba <displayDriverInit>
- ada:	84 e0       	ldi	r24, 0x04	; 4
-	status = WAITING;
- adc:	80 93 15 01 	sts	0x0115, r24	; 0x800115 <status>
+ ade:	6d de       	rcall	.-806    	; 0x7ba <displayDriverInit>
 	displayInit();
  ae0:	32 dc       	rcall	.-1948   	; 0x346 <displayInit>
 	wait(500);
@@ -2086,11 +2230,10 @@ int main(void)
  aea:	8a bb       	out	0x1a, r24	; 26
  aec:	8f ef       	ldi	r24, 0xFF	; 255
 	
-	 DDRC = 0xff;           // Configure PORTC as output for sound
+	 DDRC = 0xff;           
  aee:	84 bb       	out	0x14, r24	; 20
  af0:	64 e0       	ldi	r22, 0x04	; 4
 
-	//addCandy();
 	setStartLocation(4,4);
  af2:	70 e0       	ldi	r23, 0x00	; 0
  af4:	84 e0       	ldi	r24, 0x04	; 4
@@ -2098,9 +2241,7 @@ int main(void)
  af8:	8e db       	rcall	.-2276   	; 0x216 <setStartLocation>
  afa:	87 e0       	ldi	r24, 0x07	; 7
 
-		//EICRA |= 0x30;			// INT2 rising edge
-		//EIMSK |= 0x04;			// Enable INT2
-	
+
 	    OCR2 = 519;
  afc:	83 bd       	out	0x23, r24	; 35
  afe:	88 e0       	ldi	r24, 0x08	; 8
@@ -2119,7 +2260,7 @@ int main(void)
 	    TCNT2 = 0;
  b10:	78 94       	sei
 	sei();
- b12:	ff cf       	rjmp	.-2      	; 0xb12 <main+0x40>
+ b12:	ff cf       	rjmp	.-2      	; 0xb12 <main+0x3a>
 
 00000b14 <beepOn>:
 
