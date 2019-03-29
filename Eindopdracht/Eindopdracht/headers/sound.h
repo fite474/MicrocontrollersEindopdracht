@@ -14,6 +14,7 @@ void beepOff(void);
 void beepGameOver(void);
 void testsound1(void);
 void testsound2(void);
+void testsound3(void);
 
 
 #endif /* SOUND_H_ */
