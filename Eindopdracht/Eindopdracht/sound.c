@@ -10,6 +10,8 @@
 
 static int x = 2000;
 #define F_CPU 2000  // change this value to change the sound produced by the beep
+volatile uint16_t freq;
+
 
 void SetFreq(unsigned char freq)
 {
@@ -88,34 +90,15 @@ void testsound2(void)
 }
 void testsound3(void)
 {
+	freq = 0x000F;
+	OCR1A = freq;
 	while(1){
-			PORTC = 0xff;        // Turn ON the Buzzer conneted to PORTC
-			wait(500);
-			//PORTC = 0x00;
-						PORTC = 0x1f;        // Turn ON the Buzzer conneted to PORTC
-						wait(500);
-						PORTC = 0x00;
-			
-			PORTC = 0x82;        // Turn ON the Buzzer conneted to PORTC
-			wait(500);
-			//PORTC = 0x00;        // T
-			
-			PORTC = 0xfa;        // Turn ON the Buzzer conneted to PORTC
-			wait(500);
-			//PORTC = 0x00;        // T
-			
-						PORTC = 0x1f;        // Turn ON the Buzzer conneted to PORTC
-						wait(500);
-						//PORTC = 0x00;
-						
-						
-						PORTC = 0xf8;        // Turn ON the Buzzer conneted to PORTC
-						wait(500);
-						//PORTC = 0x00;        // T
-						
-						PORTC = 0x22;        // Turn ON the Buzzer conneted to PORTC
-						wait(500);
-						//PORTC = 0x00;        // T
+ freq += 0x000F;
+ OCR1A = freq;
+ PORTC = 0xff;     
+ wait(300);
+ 				PORTC = 0x00;        // T
+
 	}
 		
 }
