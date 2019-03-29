@@ -15,19 +15,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 00000260  00000000  00000000  000010dc  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   000023fa  00000000  00000000  0000133c  2**0
+  6 .debug_info   000023c7  00000000  00000000  0000133c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000f28  00000000  00000000  00003736  2**0
+  7 .debug_abbrev 00000f45  00000000  00000000  00003703  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000015f5  00000000  00000000  0000465e  2**0
+  8 .debug_line   0000166d  00000000  00000000  00004648  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  0000050c  00000000  00000000  00005c54  2**2
+  9 .debug_frame  0000050c  00000000  00000000  00005cb8  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000958  00000000  00000000  00006160  2**0
+ 10 .debug_str    00000958  00000000  00000000  000061c4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000fb8  00000000  00000000  00006ab8  2**0
+ 11 .debug_loc    00000fb8  00000000  00000000  00006b1c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000210  00000000  00000000  00007a70  2**0
+ 12 .debug_ranges 00000210  00000000  00000000  00007ad4  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -2265,82 +2265,111 @@ testsound3();
  b14:	ff cf       	rjmp	.-2      	; 0xb14 <main+0x3c>
 
 00000b16 <testsound3>:
- b16:	8f ef       	ldi	r24, 0xFF	; 255
-				wait(3000);
+ b16:	ee 24       	eor	r14, r14
 				PORTC = 0x00;        // T
 }
 void testsound3(void)
 {
+	while(1){
 			PORTC = 0xff;        // Turn ON the Buzzer conneted to PORTC
- b18:	85 bb       	out	0x15, r24	; 21
+ b18:	ea 94       	dec	r14
 			wait(500);
- b1a:	84 ef       	ldi	r24, 0xF4	; 244
- b1c:	91 e0       	ldi	r25, 0x01	; 1
- b1e:	47 d0       	rcall	.+142    	; 0xbae <wait>
 			PORTC = 0x00;
- b20:	15 ba       	out	0x15, r1	; 21
-			wait(500);
- b22:	84 ef       	ldi	r24, 0xF4	; 244
- b24:	91 e0       	ldi	r25, 0x01	; 1
- b26:	43 d0       	rcall	.+134    	; 0xbae <wait>
+						PORTC = 0x1f;        // Turn ON the Buzzer conneted to PORTC
+ b1a:	cf e1       	ldi	r28, 0x1F	; 31
+						wait(500);
+						PORTC = 0x00;
 			
 			PORTC = 0x82;        // Turn ON the Buzzer conneted to PORTC
- b28:	82 e8       	ldi	r24, 0x82	; 130
- b2a:	85 bb       	out	0x15, r24	; 21
+ b1c:	0f 2e       	mov	r0, r31
+ b1e:	f2 e8       	ldi	r31, 0x82	; 130
+ b20:	ff 2e       	mov	r15, r31
+ b22:	f0 2d       	mov	r31, r0
+			wait(500);
+			PORTC = 0x00;        // T
+			
+			PORTC = 0xfa;        // Turn ON the Buzzer conneted to PORTC
+ b24:	0a ef       	ldi	r16, 0xFA	; 250
+						PORTC = 0x1f;        // Turn ON the Buzzer conneted to PORTC
+						wait(500);
+						PORTC = 0x00;
+						
+						
+						PORTC = 0xf8;        // Turn ON the Buzzer conneted to PORTC
+ b26:	18 ef       	ldi	r17, 0xF8	; 248
+						wait(500);
+						PORTC = 0x00;        // T
+						
+						PORTC = 0x22;        // Turn ON the Buzzer conneted to PORTC
+ b28:	d2 e2       	ldi	r29, 0x22	; 34
+				PORTC = 0x00;        // T
+}
+void testsound3(void)
+{
+	while(1){
+			PORTC = 0xff;        // Turn ON the Buzzer conneted to PORTC
+ b2a:	e5 ba       	out	0x15, r14	; 21
 			wait(500);
  b2c:	84 ef       	ldi	r24, 0xF4	; 244
  b2e:	91 e0       	ldi	r25, 0x01	; 1
  b30:	3e d0       	rcall	.+124    	; 0xbae <wait>
-			PORTC = 0x00;        // T
+			PORTC = 0x00;
  b32:	15 ba       	out	0x15, r1	; 21
+						PORTC = 0x1f;        // Turn ON the Buzzer conneted to PORTC
+ b34:	c5 bb       	out	0x15, r28	; 21
+						wait(500);
+ b36:	84 ef       	ldi	r24, 0xF4	; 244
+ b38:	91 e0       	ldi	r25, 0x01	; 1
+ b3a:	39 d0       	rcall	.+114    	; 0xbae <wait>
+						PORTC = 0x00;
+ b3c:	15 ba       	out	0x15, r1	; 21
 			
-			PORTC = 0xfa;        // Turn ON the Buzzer conneted to PORTC
- b34:	8a ef       	ldi	r24, 0xFA	; 250
+			PORTC = 0x82;        // Turn ON the Buzzer conneted to PORTC
+ b3e:	f5 ba       	out	0x15, r15	; 21
 			wait(500);
- b36:	85 bb       	out	0x15, r24	; 21
- b38:	84 ef       	ldi	r24, 0xF4	; 244
- b3a:	91 e0       	ldi	r25, 0x01	; 1
-			PORTC = 0x00;        // T
- b3c:	38 d0       	rcall	.+112    	; 0xbae <wait>
-			wait(500);
- b3e:	15 ba       	out	0x15, r1	; 21
  b40:	84 ef       	ldi	r24, 0xF4	; 244
  b42:	91 e0       	ldi	r25, 0x01	; 1
-						PORTC = 0x1f;        // Turn ON the Buzzer conneted to PORTC
  b44:	34 d0       	rcall	.+104    	; 0xbae <wait>
- b46:	8f e1       	ldi	r24, 0x1F	; 31
-						wait(500);
- b48:	85 bb       	out	0x15, r24	; 21
+			PORTC = 0x00;        // T
+ b46:	15 ba       	out	0x15, r1	; 21
+			
+			PORTC = 0xfa;        // Turn ON the Buzzer conneted to PORTC
+			wait(500);
+ b48:	05 bb       	out	0x15, r16	; 21
  b4a:	84 ef       	ldi	r24, 0xF4	; 244
  b4c:	91 e0       	ldi	r25, 0x01	; 1
-						PORTC = 0x00;
  b4e:	2f d0       	rcall	.+94     	; 0xbae <wait>
-						wait(500);
+			PORTC = 0x00;        // T
+			
+						PORTC = 0x1f;        // Turn ON the Buzzer conneted to PORTC
  b50:	15 ba       	out	0x15, r1	; 21
- b52:	84 ef       	ldi	r24, 0xF4	; 244
- b54:	91 e0       	ldi	r25, 0x01	; 1
+						wait(500);
+ b52:	c5 bb       	out	0x15, r28	; 21
+ b54:	84 ef       	ldi	r24, 0xF4	; 244
+ b56:	91 e0       	ldi	r25, 0x01	; 1
+						PORTC = 0x00;
+ b58:	2a d0       	rcall	.+84     	; 0xbae <wait>
+						
 						
 						PORTC = 0xf8;        // Turn ON the Buzzer conneted to PORTC
- b56:	2b d0       	rcall	.+86     	; 0xbae <wait>
- b58:	88 ef       	ldi	r24, 0xF8	; 248
+ b5a:	15 ba       	out	0x15, r1	; 21
 						wait(500);
- b5a:	85 bb       	out	0x15, r24	; 21
- b5c:	84 ef       	ldi	r24, 0xF4	; 244
- b5e:	91 e0       	ldi	r25, 0x01	; 1
+ b5c:	15 bb       	out	0x15, r17	; 21
+ b5e:	84 ef       	ldi	r24, 0xF4	; 244
+ b60:	91 e0       	ldi	r25, 0x01	; 1
 						PORTC = 0x00;        // T
- b60:	26 d0       	rcall	.+76     	; 0xbae <wait>
+ b62:	25 d0       	rcall	.+74     	; 0xbae <wait>
 						
 						PORTC = 0x22;        // Turn ON the Buzzer conneted to PORTC
- b62:	15 ba       	out	0x15, r1	; 21
- b64:	82 e2       	ldi	r24, 0x22	; 34
+ b64:	15 ba       	out	0x15, r1	; 21
 						wait(500);
- b66:	85 bb       	out	0x15, r24	; 21
+ b66:	d5 bb       	out	0x15, r29	; 21
  b68:	84 ef       	ldi	r24, 0xF4	; 244
  b6a:	91 e0       	ldi	r25, 0x01	; 1
  b6c:	20 d0       	rcall	.+64     	; 0xbae <wait>
 						PORTC = 0x00;        // T
  b6e:	15 ba       	out	0x15, r1	; 21
- b70:	08 95       	ret
+ b70:	dc cf       	rjmp	.-72     	; 0xb2a <testsound3+0x14>
 
 00000b72 <beepOn>:
 		
