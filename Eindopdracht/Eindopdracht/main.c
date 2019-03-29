@@ -36,6 +36,7 @@ int main(void)
 	
 	 DDRC = 0xff;           
 
+testsound1();
 	setStartLocation(4,4);
 
 

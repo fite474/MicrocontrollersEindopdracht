@@ -8,7 +8,32 @@
 #include <avr/io.h>
 #include "headers/wait.h"
 
-#define F_CPU 2000  // change this value to change the sound produced by the beep
+static int x = 2000;
+#define F_CPU x  // change this value to change the sound produced by the beep
+
+
+
+void testsound1(void)
+{
+	PORTC = 0xff;        // Turn ON the Buzzer conneted to PORTC
+	wait(3000);
+	PORTC = 0x00;
+	wait(500);  
+	x = 5000;      // Turn OFF the Buzzer connected to PORTC
+	PORTC = 0xff;        // Turn ON the Buzzer conneted to PORTC
+	wait(3000);
+	PORTC = 0x00;        // T
+	
+	
+}
+void testsound2(void)
+{
+	
+}
+void testsound3(void)
+{
+	
+}
 
 void beepOn(void)
 {
@@ -23,6 +48,7 @@ void beepOff(void)
 
 void beepGameOver()
 {
+
 		PORTC = 0xff;        // Turn ON the Buzzer conneted to PORTC
 		wait(300);
 	    PORTC = 0x00;
