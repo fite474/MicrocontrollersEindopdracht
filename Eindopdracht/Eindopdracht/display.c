@@ -361,8 +361,6 @@ int moveToNewLocation(int x, int y)
 			locationlist = locationlist->next;
 		}
 		
-		
-		//writeLedDisplay(position);
 		locationlist = locationList;
 		locationCounter = 0;
 		LocationList *newLocation = (LocationList *)malloc(sizeof(LocationList));
@@ -397,36 +395,9 @@ int moveToNewLocation(int x, int y)
 		displayClr();
 		return 0;
 	}
+	return 1;
 }
 		
-					
-			
-			
-			//
-			//if(p->number == max){
-				//displayClrPixel(p->loc.x,p->loc.y);
-				//locatie loc;
-				//loc.x = x;
-				//loc.y = y;
-				//p->loc = loc;
-				//p->number = counter;
-				//counter++;
-				//if(counter2 == 0){
-					//p->next = locList->next;
-					//locList = p;
-				//}
-				//startLocation.x = x;
-				//startLocation.y = y;
-				//break;
-			//}
-			//counter2++;
-			//p = p->next;
-		//}
-		//
-	//}
-	
-
-
 int moveSnakeUp(){
 	
 	int x = currentLocation.x;

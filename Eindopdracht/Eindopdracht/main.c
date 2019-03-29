@@ -38,10 +38,9 @@ ISR( TIMER2_COMP_vect )
 				if(status != newStatus)
 				{
 				check = 0;
-				status = newStatus;//checkDirection();
+				status = newStatus;
 				}
 			}
-			//status = checkDirection();
 			if (tick == 200)
 			{
 				tick = 0;
@@ -131,6 +130,7 @@ ISR( TIMER2_COMP_vect )
 		{
 			if(1 == tick)
 			{
+				beepGameOver();
 				drawImage();
 				update();
 				beepGameOver();
@@ -171,14 +171,11 @@ int main(void)
 	wait(500);
 	DDRA = 0x0F;
 	
-	 DDRC = 0xff;           // Configure PORTC as output for sound
+	 DDRC = 0xff;           
 
-	//addCandy();
 	setStartLocation(4,4);
 
-		//EICRA |= 0x30;			// INT2 rising edge
-		//EIMSK |= 0x04;			// Enable INT2
-	
+
 	    OCR2 = 519;
 	    TCCR2 = 1<<WGM21;
 	    
@@ -186,12 +183,11 @@ int main(void)
 	    TCCR2 |= 1<<CS22 | 0<<CS21 | 1<<CS20;
 	    TCNT2 = 0;
 	sei();
-
-	//startGame();
 	
 	while (1)
 	{
 		
 	}
+	return 0;
 }
 
