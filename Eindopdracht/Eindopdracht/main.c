@@ -17,6 +17,7 @@
 #include "headers/buttons.h"
 #include "headers/sound.h"
 #include "headers/game.h"
+#include "headers/screen.h"
 
 ISR( TIMER2_COMP_vect )
 {
@@ -33,9 +34,11 @@ int main(void)
 	displayInit();
 	wait(500);
 	DDRA = 0x0F;
+	init_4bits_mode();
+	resetScore();
+	//DDRC = 0xff;
 	
-	 DDRC = 0xff;           
-
+	// DDRE = 0xff;     
 	setStartLocation(4,4);
 
 

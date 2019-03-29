@@ -12,28 +12,28 @@
 
 void beepOn(void)
 {
-	 PORTC = 0xff;        // Turn ON the Buzzer conneted to PORTC
+	 PORTE = 0xff;        // Turn ON the Buzzer conneted to PORTC
 }
 
 void beepOff(void)
 {
-	  PORTC = 0x00;        // Turn OFF the Buzzer connected to PORTC
+	  PORTE = 0x00;        // Turn OFF the Buzzer connected to PORTC
 
 }
 
 void beepGameOver()
 {
-		PORTC = 0xff;        // Turn ON the Buzzer conneted to PORTC
+		PORTE = 0xff;        // Turn ON the Buzzer conneted to PORTC
 		wait(300);
-	    PORTC = 0x00;
+	    PORTE = 0x00;
 	    wait(500);        // Turn OFF the Buzzer connected to PORTC
-	  	PORTC = 0xff;        // Turn ON the Buzzer conneted to PORTC
+	  	PORTE = 0xff;        // Turn ON the Buzzer conneted to PORTC
 	  	wait(500);
-	    PORTC = 0x00;        // Turn OFF the Buzzer connected to PORTC
+	    PORTE = 0x00;        // Turn OFF the Buzzer connected to PORTC
 		wait(500);
-		PORTC = 0xff;        // Turn ON the Buzzer conneted to PORTC
+		PORTE = 0xff;        // Turn ON the Buzzer conneted to PORTC
 	    wait(2000);
-		PORTC = 0x00;        // Turn OFF the Buzzer connected to PORTC
+		PORTE = 0x00;        // Turn OFF the Buzzer connected to PORTC
 	  
 
 }

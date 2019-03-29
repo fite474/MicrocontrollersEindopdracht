@@ -11,5 +11,6 @@
 enum eStatus {GOING_UP,GOING_DOWN,GOING_LEFT,GOING_RIGHT, WAITING};
 
 int checkDirection(void);
+int menuDirection(void);
 
 #endif /* BUTTONS_H_ */

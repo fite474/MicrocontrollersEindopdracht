@@ -49,21 +49,18 @@ int menuDirection()
 
 	if (PINA & 0x81)
 	{
-		moving = GOING_UP;
+		return GOING_UP;
 	}
 	if (PINA & 0x82)
 	{
-		moving = GOING_DOWN;
-	}
-	if (PINA & 0x84)
-	{
-		moving = GOING_LEFT;
+		return GOING_DOWN;
 	}
 	if (PINA & 0x88)
 	{
-		moving = GOING_RIGHT;
+		return GOING_RIGHT;
 	}
 	
-	return moving;
+	return WAITING;
+	
 	
 }

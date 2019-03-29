@@ -20,44 +20,85 @@
 #include "headers/screen.h"
 
 enum gameStatus{COUNTING, PLAYING, GAMEOVER, MENU};
-enum gameStatus gStatus = COUNTING;
+enum gameStatus gStatus = MENU;
 enum eStatus status = GOING_UP;
 
+int gameSpeed = 0;
 int tick = 0;
 int check = 1;
 
 void menu(){
+	int inMenu = 1;
 	int position = 0;
-	init_4bits_mode();
-	lcd_write_command(1);
 	lcd_write_command(12);
-	lcd_write_command(2);
+	while(inMenu){
+		lcd_write_command(2);
+		lcd_write_command(1);
 	
-	if(position == 0){
-		lcd_write_string("> Easy");
-		lcd_write_command(168);
-		lcd_write_string(" ");
-		lcd_write_command(168);
-		lcd_write_string("  Normal");
-	}else
-	if(position == 1){
-		lcd_write_string("> Normal");
-		lcd_write_command(168);
-		lcd_write_string(" ");
-		lcd_write_command(168);
-		lcd_write_string("  Hard");
-	}else
-	if(position == 2){
-		lcd_write_string("  Normal");
-		lcd_write_command(168);
-		lcd_write_string(" ");
-		lcd_write_command(168);
-		lcd_write_string("> Hard");
-	}
-	while(1){
+		if(position == 0){
+			lcd_write_string("> Easy");
+			lcd_write_command(168);
+			lcd_write_string(" ");
+			lcd_write_command(168);
+			lcd_write_string("  Normal");
+		}else
+		if(position == 1){
+			lcd_write_string("> Normal");
+			lcd_write_command(168);
+			lcd_write_string(" ");
+			lcd_write_command(168);
+			lcd_write_string("  Hard");
+		}else
+		if(position == 2){
+			lcd_write_string("  Normal");
+			lcd_write_command(168);
+			lcd_write_string(" ");
+			lcd_write_command(168);
+			lcd_write_string("> Hard");
+		}
+		wait(500);
+		enum eStatus move = WAITING;
+		while(move == WAITING){
+			move = menuDirection();		
+		}
+		wait(500);
+	
 		
+
+		switch(move){
+			case GOING_UP :{
+				if(position != 0){
+					position--;
+				}
+				break;
+			}
+			case GOING_RIGHT :{
+				inMenu = 0;
+				gStatus = COUNTING;
+				if(position == 0)
+					gameSpeed = 1000;
+				else if(position == 1)
+					gameSpeed = 500;
+				else if(position == 2)
+					gameSpeed = 200;
+				tick = 0;
+				break;
+			}
+			case GOING_LEFT :{
+				break;
+			}
+			case GOING_DOWN :{
+				if (position != 2)
+				{
+					position++;
+				}
+			}
+			case WAITING :{
+				break;
+			}
+		}
 	}
-	wait(1000);
+	//wait(1000);
 }
 
 void gameOver(){
@@ -68,9 +109,9 @@ void gameOver(){
 		update();
 		beepGameOver();
 	}else
-	if(tick > 4000)
+	if(tick > 3000)
 	{
-		gStatus = COUNTING;
+		gStatus = MENU;
 		resetDisplay();
 		resetScore();
 		displayClr();
@@ -91,7 +132,7 @@ void playing(){
 			status = newStatus;
 		}
 	}
-	if (tick == 200)
+	if (tick == gameSpeed)
 	{
 		tick = 0;
 		switch (status)
