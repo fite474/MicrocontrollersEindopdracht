@@ -12,6 +12,8 @@ game.c
 
 main.c
 
+screen.c
+
 sound.c
 
 wait.c

@@ -165,6 +165,9 @@
     <Compile Include="headers\game.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="headers\screen.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="headers\sound.h">
       <SubType>compile</SubType>
     </Compile>
@@ -172,6 +175,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="screen.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="sound.c">

@@ -17,6 +17,7 @@
 #include "headers/buttons.h"
 #include "headers/sound.h"
 #include "headers/game.h"
+#include "headers/screen.h"
 
 enum gameStatus{COUNTING, PLAYING, GAMEOVER, MENU};
 enum gameStatus gStatus = COUNTING;
@@ -26,8 +27,37 @@ int tick = 0;
 int check = 1;
 
 void menu(){
+	int position = 0;
+	init_4bits_mode();
+	lcd_write_command(1);
+	lcd_write_command(12);
+	lcd_write_command(2);
 	
-	
+	if(position == 0){
+		lcd_write_string("> Easy");
+		lcd_write_command(168);
+		lcd_write_string(" ");
+		lcd_write_command(168);
+		lcd_write_string("  Normal");
+	}else
+	if(position == 1){
+		lcd_write_string("> Normal");
+		lcd_write_command(168);
+		lcd_write_string(" ");
+		lcd_write_command(168);
+		lcd_write_string("  Hard");
+	}else
+	if(position == 2){
+		lcd_write_string("  Normal");
+		lcd_write_command(168);
+		lcd_write_string(" ");
+		lcd_write_command(168);
+		lcd_write_string("> Hard");
+	}
+	while(1){
+		
+	}
+	wait(1000);
 }
 
 void gameOver(){
@@ -163,6 +193,11 @@ void startGame()
 		case GAMEOVER :
 		{
 			gameOver();
+			break;
+		}
+		case MENU :
+		{
+			menu();
 			break;
 		}
 	}
