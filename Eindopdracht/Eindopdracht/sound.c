@@ -91,31 +91,31 @@ void testsound3(void)
 	while(1){
 			PORTC = 0xff;        // Turn ON the Buzzer conneted to PORTC
 			wait(500);
-			PORTC = 0x00;
+			//PORTC = 0x00;
 						PORTC = 0x1f;        // Turn ON the Buzzer conneted to PORTC
 						wait(500);
 						PORTC = 0x00;
 			
 			PORTC = 0x82;        // Turn ON the Buzzer conneted to PORTC
 			wait(500);
-			PORTC = 0x00;        // T
+			//PORTC = 0x00;        // T
 			
 			PORTC = 0xfa;        // Turn ON the Buzzer conneted to PORTC
 			wait(500);
-			PORTC = 0x00;        // T
+			//PORTC = 0x00;        // T
 			
 						PORTC = 0x1f;        // Turn ON the Buzzer conneted to PORTC
 						wait(500);
-						PORTC = 0x00;
+						//PORTC = 0x00;
 						
 						
 						PORTC = 0xf8;        // Turn ON the Buzzer conneted to PORTC
 						wait(500);
-						PORTC = 0x00;        // T
+						//PORTC = 0x00;        // T
 						
 						PORTC = 0x22;        // Turn ON the Buzzer conneted to PORTC
 						wait(500);
-						PORTC = 0x00;        // T
+						//PORTC = 0x00;        // T
 	}
 		
 }
