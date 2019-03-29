@@ -10,5 +10,7 @@ fourSegmentDisplay.c
 
 main.c
 
+sound.c
+
 wait.c
 

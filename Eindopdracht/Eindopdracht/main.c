@@ -15,6 +15,7 @@
 #include "headers/wait.h"
 #include "headers/fourSegmentDisplay.h"
 #include "headers/buttons.h"
+#include "headers/sound.h"
 
 //variables
 enum gameStatus{COUNTING, PLAYING, GAMEOVER};
@@ -91,25 +92,33 @@ ISR( TIMER2_COMP_vect )
 		{
 			if(tick == 700)
 			{
+				beepOn();
 				drawCounting(3);
 				update();
+				beepOff();
 			}else
 			if(tick == 1400)
 			{
+				beepOn();
 				drawCounting(2);
 				update();
+				beepOff();
 			}else
 			if(tick == 2100)
 			{
+				beepOn();
 				drawCounting(1);
 				update();
+				beepOff();
 			}else
 			if (tick == 2800)
 			{
+				beepOn();
 				displayClr();
 				displayDrawStart();
 				addCandy();
 				update();
+				beepOff();
 				gStatus = PLAYING;
 				check = 0;
 				tick = 0;
@@ -124,6 +133,7 @@ ISR( TIMER2_COMP_vect )
 			{
 				drawImage();
 				update();
+				beepGameOver();
 			}else
 			if(tick > 4000)
 			{
@@ -160,6 +170,8 @@ int main(void)
 	displayInit();
 	wait(500);
 	DDRA = 0x0F;
+	
+	 DDRC = 0xff;           // Configure PORTC as output for sound
 
 	//addCandy();
 	setStartLocation(4,4);

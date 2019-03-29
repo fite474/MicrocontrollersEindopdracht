@@ -159,10 +159,16 @@
     <Compile Include="headers\fourSegmentDisplay.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="headers\sound.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="headers\wait.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="sound.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="wait.c">
