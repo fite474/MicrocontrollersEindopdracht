@@ -38,3 +38,32 @@ int checkDirection()
 	return moving;
 	
 }
+
+int menuDirection()
+{
+	//DDRB=0x01; // Set PB0 pin as output for display select
+	//spi_masterInit(); // Initialize spi module
+	//displayDriverInit(); // Initialize display chip
+	
+	DDRA = 0x0F;
+
+	if (PINA & 0x81)
+	{
+		moving = GOING_UP;
+	}
+	if (PINA & 0x82)
+	{
+		moving = GOING_DOWN;
+	}
+	if (PINA & 0x84)
+	{
+		moving = GOING_LEFT;
+	}
+	if (PINA & 0x88)
+	{
+		moving = GOING_RIGHT;
+	}
+	
+	return moving;
+	
+}

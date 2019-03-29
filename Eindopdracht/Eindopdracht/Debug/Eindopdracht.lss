@@ -13,21 +13,21 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  0000103c  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000230  00000000  00000000  0000107c  2**0
+  5 .debug_aranges 00000240  00000000  00000000  0000107c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00002167  00000000  00000000  000012ac  2**0
+  6 .debug_info   0000219b  00000000  00000000  000012bc  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000eaa  00000000  00000000  00003413  2**0
+  7 .debug_abbrev 00000ed8  00000000  00000000  00003457  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000013a5  00000000  00000000  000042bd  2**0
+  8 .debug_line   00001407  00000000  00000000  0000432f  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  0000049c  00000000  00000000  00005664  2**2
+  9 .debug_frame  000004bc  00000000  00000000  00005738  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000008b9  00000000  00000000  00005b00  2**0
+ 10 .debug_str    000008d1  00000000  00000000  00005bf4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000ebd  00000000  00000000  000063b9  2**0
+ 11 .debug_loc    00000ebd  00000000  00000000  000064c5  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000001e0  00000000  00000000  00007276  2**0
+ 12 .debug_ranges 000001f0  00000000  00000000  00007382  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -1865,8 +1865,8 @@ void calculateNewScoreMovement()
  91a:	08 95       	ret
 
 0000091c <gameOver>:
-int check = 1;
-
+	
+}
 
 void gameOver(){
 	

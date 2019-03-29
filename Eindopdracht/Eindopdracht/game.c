@@ -18,13 +18,17 @@
 #include "headers/sound.h"
 #include "headers/game.h"
 
-enum gameStatus{COUNTING, PLAYING, GAMEOVER};
+enum gameStatus{COUNTING, PLAYING, GAMEOVER, MENU};
 enum gameStatus gStatus = COUNTING;
 enum eStatus status = GOING_UP;
 
 int tick = 0;
 int check = 1;
 
+void menu(){
+	
+	
+}
 
 void gameOver(){
 	
