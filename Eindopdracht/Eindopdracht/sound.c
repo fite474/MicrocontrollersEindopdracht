@@ -9,7 +9,7 @@
 #include "headers/wait.h"
 
 static int x = 2000;
-#define F_CPU x  // change this value to change the sound produced by the beep
+#define F_CPU 2000  // change this value to change the sound produced by the beep
 
 void SetFreq(unsigned char freq)
 {
@@ -88,7 +88,32 @@ void testsound2(void)
 }
 void testsound3(void)
 {
-	
+			PORTC = 0xff;        // Turn ON the Buzzer conneted to PORTC
+			wait(500);
+			PORTC = 0x00;
+			wait(500);
+			
+			PORTC = 0x82;        // Turn ON the Buzzer conneted to PORTC
+			wait(500);
+			PORTC = 0x00;        // T
+			
+			PORTC = 0xfa;        // Turn ON the Buzzer conneted to PORTC
+			wait(500);
+			PORTC = 0x00;        // T
+			wait(500);
+						PORTC = 0x1f;        // Turn ON the Buzzer conneted to PORTC
+						wait(500);
+						PORTC = 0x00;
+						wait(500);
+						
+						PORTC = 0xf8;        // Turn ON the Buzzer conneted to PORTC
+						wait(500);
+						PORTC = 0x00;        // T
+						
+						PORTC = 0x22;        // Turn ON the Buzzer conneted to PORTC
+						wait(500);
+						PORTC = 0x00;        // T
+		
 }
 
 void beepOn(void)

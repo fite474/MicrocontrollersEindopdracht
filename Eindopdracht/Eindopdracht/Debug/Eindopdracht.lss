@@ -15,19 +15,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 00000260  00000000  00000000  000010a0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   0000230f  00000000  00000000  00001300  2**0
+  6 .debug_info   000023fa  00000000  00000000  00001300  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000f28  00000000  00000000  0000360f  2**0
+  7 .debug_abbrev 00000f28  00000000  00000000  000036fa  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00001577  00000000  00000000  00004537  2**0
+  8 .debug_line   000015f5  00000000  00000000  00004622  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  0000050c  00000000  00000000  00005ab0  2**2
+  9 .debug_frame  0000050c  00000000  00000000  00005c18  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000958  00000000  00000000  00005fbc  2**0
+ 10 .debug_str    00000958  00000000  00000000  00006124  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000fb8  00000000  00000000  00006914  2**0
+ 11 .debug_loc    00000fb8  00000000  00000000  00006a7c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000210  00000000  00000000  000078cc  2**0
+ 12 .debug_ranges 00000210  00000000  00000000  00007a34  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -2266,12 +2266,12 @@ testsound1();
 
 00000b16 <testsound1>:
  b16:	cf 93       	push	r28
-				PORTC = 0xff;        // Turn ON the Buzzer conneted to PORTC
-				wait(3000);
-				PORTC = 0x00;        // T
-}
-void testsound3(void)
-{
+						wait(500);
+						PORTC = 0x00;        // T
+						
+						PORTC = 0x22;        // Turn ON the Buzzer conneted to PORTC
+						wait(500);
+						PORTC = 0x00;        // T
  b18:	cf ef       	ldi	r28, 0xFF	; 255
  b1a:	c5 bb       	out	0x15, r28	; 21
  b1c:	88 eb       	ldi	r24, 0xB8	; 184
@@ -2290,7 +2290,7 @@ void testsound3(void)
  b36:	08 95       	ret
 
 00000b38 <beepOn>:
-	
+		
 }
 
 void beepOn(void)
