@@ -315,7 +315,6 @@ void resetDisplay(void)
 
 int moveToNewLocation(int x, int y)
 {
-	int returnValue = 0;
 	
 	if(x == candy.x && y == candy.y){
 		increaseSnakeSize();
@@ -391,14 +390,13 @@ int moveToNewLocation(int x, int y)
 			locationCounter++;
 			
 		}
-		returnValue = 1;
+		return 1;
 		}
 	}else
 	{
 		displayClr();
-		returnValue = 0;
+		return 0;
 	}
-	return returnValue;
 }
 		
 					
